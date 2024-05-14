@@ -1,0 +1,30 @@
+﻿using Ewamall.Domain.Entities;
+
+namespace Ewamall.WebAPI.DTOs
+{
+    public class CreateProductCommand
+    {
+        public string ProductName { get;  set; }
+        public string ProductDescription { get;  set; }
+        public Guid CoverImageId { get;  set; }
+        public Guid ImagesId { get;  set; }
+        public Guid VideoId { get;  set; }
+        public int IndustryId { get;  set; }
+        public int SellerId { get;  set; }
+        public List<ProductDetailCommand> ProductSellDetails { get; set; }
+        public ProductSellCommand ProductSellCommand { get; set; }
+
+    }
+    public class ProductDetailCommand
+    {
+        public int ProductId { get;  set; }
+        public int DetailId { get;  set;}
+        public string Description { get;  set; }
+    }
+    public class ProductSellCommand
+    {
+        public int ProductId { get;  set; }
+        public int DetailId { get;  set; }
+        public string Description { get;  set; }
+    }
+}
