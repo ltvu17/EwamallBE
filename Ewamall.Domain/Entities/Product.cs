@@ -1,4 +1,5 @@
 ﻿using Ewamall.Domain.Primitives;
+using Ewamall.Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -39,12 +40,12 @@ namespace Ewamall.Domain.Entities
         public int SellerId { get; private set; }
         public Seller Seller { get; private set; }
 
-        public static Product Create(string productName, string productDescription, Guid coverImageId, Guid imagesId, Guid videoId, int industryId, int sellerId)
+        public static Result<Product> Create(string productName, string productDescription, Guid coverImageId, Guid imagesId, Guid videoId, int industryId, int sellerId)
         {
             var product = new Product(productName,productDescription, coverImageId, imagesId, videoId ,industryId, sellerId);
             return product;
         }
-        public Product AddProductDetail(int productDetailId, string description)
+        public Result<Product> AddProductDetail(int productDetailId, string description)
         {
             _productSellDetails.Add(ProductDetail.Create(this, productDetailId, description));
             return this;

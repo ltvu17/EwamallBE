@@ -37,7 +37,7 @@ namespace Ewamall.WebAPI.Services.Implements
 
         public async Task<Result<Product>> CreateProduct(CreateProductCommand request)
         {
-            var product = Product.Create(
+            var result = Product.Create(
                 request.ProductName,
                 request.ProductDescription,
                 request.CoverImageId,
@@ -46,10 +46,11 @@ namespace Ewamall.WebAPI.Services.Implements
                 request.IndustryId,
                 request.SellerId
                 );
-            if(product is null)
+            if(result.IsFailure)
             {
                 return Result.Failure<Product>(new Error("IEnumerable<Product>.GetAll()", "Fail to load product"));
             }
+            var product = result.Value;
             var productDetail = request.ProductSellDetails;
             if (productDetail is not null) 
             {
