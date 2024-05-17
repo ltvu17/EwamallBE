@@ -19,6 +19,7 @@ namespace Ewamall.WebAPI
         public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IIndustryService, IndustryService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddFluentValidation();
             services.AddValidatorsFromAssemblyContaining<IAssemblyMarker>();

@@ -1,4 +1,5 @@
 ﻿using Ewamall.Domain.Primitives;
+using Ewamall.Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Ewamall.Domain.Entities
         {
             
         }
-        public Detail(int id,string detailName, string detailDescription) : base(id)
+        public Detail(string detailName, string detailDescription) 
         {
             DetailName = detailName;
             DetailDescription = detailDescription;
@@ -23,5 +24,13 @@ namespace Ewamall.Domain.Entities
         public string DetailDescription { get; set; }
         public IEnumerable<IndustryDetail> IndustryDetails { get; set; }
         public IEnumerable<ProductDetail> ProductDetails { get; set; }
+        internal static Result<Detail> Create(string detailName, string detailDescription)
+        {
+            if( string.IsNullOrEmpty(detailName) && string.IsNullOrEmpty(detailDescription))
+            {
+                return Result.Failure<Detail>(new Error("Detail.Create()", "Create detail error"));
+            }
+            return new Detail(detailName, detailDescription);
+        }
     }
 }

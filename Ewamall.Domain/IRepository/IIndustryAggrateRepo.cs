@@ -11,5 +11,6 @@ namespace Ewamall.Business.IRepository
     public interface IIndustryAggrateRepo : IBaseRepo<Industry>
     {
         public bool IsDetailExist(int detailId);
+        public bool IsIndustryExist(int industryId);
     }
 }

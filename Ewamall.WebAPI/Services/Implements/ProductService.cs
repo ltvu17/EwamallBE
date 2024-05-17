@@ -46,7 +46,7 @@ namespace Ewamall.WebAPI.Services.Implements
                 request.IndustryId,
                 request.SellerId
                 );
-            if(result.IsFailure)
+            if (result.IsFailure)
             {
                 return Result.Failure<Product>(new Error("IEnumerable<Product>.GetAll()", "Fail to load product"));
             }
@@ -58,6 +58,11 @@ namespace Ewamall.WebAPI.Services.Implements
                 {
                     product.AddProductDetail(detail.DetailId, detail.Description);
                 }
+            }
+            var productSellDetail = request.ProductSellCommand;
+            if (productSellDetail is not null)
+            {
+                product.AddProductSellDetail((IEnumerable<ProductSellDetail>)productSellDetail);
             }
             await _productRepo.AddAsync(product);
             await _unitOfWork.SaveChangesAsync();

@@ -14,18 +14,18 @@ namespace Ewamall.Domain.Entities
         {
             
         }
-        public ProductDetail(Product product, int detailId, string description)
+        internal ProductDetail(Product product, int detailId, string description)
         {
             Product = product;
             DetailId = detailId;
             Description = description;
         }
        
-        public Product Product { get; set; }
+        public Product Product { get; private set; }
         [ForeignKey("Detail")]
-        public int DetailId { get; set; }
-        public Detail Detail { get; set; }
-        public string Description { get; set; }
+        public int DetailId { get; private set; }
+        public Detail Detail { get; private set; }
+        public string Description { get; private set; }
 
         internal static ProductDetail Create(Product product, int detailId, string description)
         {
