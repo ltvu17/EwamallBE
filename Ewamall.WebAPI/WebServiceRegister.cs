@@ -20,6 +20,7 @@ namespace Ewamall.WebAPI
         {
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IIndustryService, IndustryService>();
+            services.AddScoped<IAccountService, AccountService>();
             services.AddFluentValidation();
             services.AddValidatorsFromAssemblyContaining<IAssemblyMarker>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

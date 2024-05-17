@@ -19,6 +19,7 @@ namespace Ewamall.Domain
                 options.UseSqlServer(connectionString);
             });
             services.AddScoped<IProductRepo, ProductRepo>();
+            services.AddScoped<IAccountRepo, AccountRepo>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIndustryAggrateRepo, IndustryAggrateRepo>();
             return services;
