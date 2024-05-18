@@ -14,6 +14,7 @@ namespace Ewamall.Domain.Entities
         {
             
         }
+
         internal ProductSellDetail(string name, float? price, int inventoryNumber, Product product)
         {
             Name = name;

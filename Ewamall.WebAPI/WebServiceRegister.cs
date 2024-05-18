@@ -5,6 +5,8 @@ using Ewamall.WebAPI.Common;
 using FluentValidation.AspNetCore;
 using Ewamall.Domain.IRepository;
 using Ewamall.Infrastructure.Repository;
+using Ewamall.Business.IRepository;
+using Ewamall.DataAccess.Repository;
 
 namespace Ewamall.WebAPI
 {
