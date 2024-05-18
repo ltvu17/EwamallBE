@@ -13,7 +13,7 @@ namespace Ewamall.Domain.Entities
         {
             
         }
-        public Staff(int id, Account account) : base(id)
+        public Staff(Account account)
         {
             Account = account;
         }

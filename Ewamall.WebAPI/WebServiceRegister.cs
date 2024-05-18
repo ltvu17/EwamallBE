@@ -25,6 +25,7 @@ namespace Ewamall.WebAPI
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IIndustryService, IndustryService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IVoucherService, VoucherService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped(typeof(IBaseSetupService<>), typeof(BaseSetupService<>));
             services.AddFluentValidation();
