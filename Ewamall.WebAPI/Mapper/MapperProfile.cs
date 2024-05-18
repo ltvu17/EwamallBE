@@ -8,6 +8,10 @@ namespace Ewamall.WebAPI.Mapper
     {
         public MapperProfile()
         {
+            CreateMap<AuthenticationResponse, Account>();
+            CreateMap<Account, AuthenticationResponse>();
+            CreateMap<Role, RoleDTO>();
+
             CreateMap<CreateProductCommand, Product>();
             CreateMap<ProductDetailCommand, ProductDetail>();
         }

@@ -33,6 +33,7 @@ namespace Ewamall.Domain.Entities
         [ForeignKey("Account")]
         public int AccountId { get; set; }
         public Account Account { get; set; }
+        public Seller? Seller { get; set; }
         public IEnumerable<Order> Orders { get; set; }
         public IEnumerable<ShipAddress> ShipAddresses { get; set; }
         public IEnumerable<FeedBack> FeedBacks { get; set; }
@@ -41,6 +42,16 @@ namespace Ewamall.Domain.Entities
         {
             var user = new User(name, dateOfBirth, gender, address, imageId, account);
             return user;
+        }
+        public Result<User> AddSeller(string shopName, string address, string phoneNumber, string email, string description)
+        {
+            var result = Seller.Create(shopName, address, phoneNumber, email, description, this);
+            if (result.IsFailure)
+            {
+                return Result.Failure<User>(result.Error);
+            }
+            Seller = result.Value;
+            return this;
         }
     }
 }

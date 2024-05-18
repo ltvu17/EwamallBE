@@ -20,6 +20,8 @@ namespace Ewamall.Domain
             });
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<IAccountRepo, AccountRepo>();
+            services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<ISellerRepo, SellerRepo>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIndustryAggrateRepo, IndustryAggrateRepo>();
             return services;

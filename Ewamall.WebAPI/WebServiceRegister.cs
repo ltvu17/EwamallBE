@@ -3,6 +3,8 @@ using Ewamall.WebAPI.Services;
 using FluentValidation;
 using Ewamall.WebAPI.Common;
 using FluentValidation.AspNetCore;
+using Ewamall.Business.IRepository;
+using Ewamall.DataAccess.Repository;
 
 namespace Ewamall.WebAPI
 {

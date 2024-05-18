@@ -14,7 +14,7 @@ namespace Ewamall.Domain.Entities
         {
             
         }
-        public ProductSellDetail(int id, string name, float? price, string? inventory, int inventoryNumber, string path, ProductSellDetail? parentNode, Product product) : base(id)
+        internal ProductSellDetail(string name, float? price, string? inventory, int inventoryNumber, string path, ProductSellDetail? parentNode, Product product)
         {
             Name = name;
             Price = price;

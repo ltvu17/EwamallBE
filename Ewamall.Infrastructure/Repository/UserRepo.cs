@@ -1,0 +1,27 @@
+﻿using Ewamall.Business.IRepository;
+using Ewamall.Domain.Entities;
+using Ewamall.Infrastructure.Dbcontext;
+using Ewamall.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Ewamall.DataAccess.Repository
+{
+    public class UserRepo : BaseRepo<User>, IUserRepo
+    {
+        private readonly EwamallDBContext _context;
+        public UserRepo(EwamallDBContext context) : base(context)
+        {
+            _context = context;
+        }
+
+        public override async Task<User> GetByIdAsync(int id)
+        {
+            return await _context.Users.Where(s => s.Id == id).FirstOrDefaultAsync();
+        }
+    }
+}
