@@ -34,5 +34,25 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpPut("UpdateIndustry/{id}")]
+        public async Task<IActionResult> UpdateIndustry(int id, CreateIndustryAndDetailCommand request)
+        {
+            var result = await _industryService.UpdateIndustry(id, request);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpDelete("DeleteIndustry/{id}")]
+        public async Task<IActionResult> DeleteIndustry(int id)
+        {
+            var result = await _industryService.DeleteIndustry(id);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result);
+        }
     }
 }

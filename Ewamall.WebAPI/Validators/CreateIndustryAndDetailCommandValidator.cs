@@ -27,7 +27,7 @@ namespace Ewamall.WebAPI.Validators
             }).WithMessage("Detail Id is not exist");
             RuleForEach(s => s.NewDetails).Must(item =>
             {
-                return string.IsNullOrEmpty(item.DetailName) && string.IsNullOrEmpty(item.DetailDescription);
+                return !string.IsNullOrEmpty(item.DetailName) && !string.IsNullOrEmpty(item.DetailDescription);
             }).WithMessage("Detai name and description must not null");
         }
     }

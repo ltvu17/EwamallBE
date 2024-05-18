@@ -11,6 +11,8 @@ namespace Ewamall.Domain.Entities
 {
     public sealed class User : Entity
     {
+        private List<Cart> _carts = new List<Cart>();
+        private List<ShipAddress> _shipAddress = new List<ShipAddress>();
         protected User()
         {
             
@@ -34,13 +36,24 @@ namespace Ewamall.Domain.Entities
         public int AccountId { get; set; }
         public Account Account { get; set; }
         public IEnumerable<Order> Orders { get; set; }
-        public IEnumerable<ShipAddress> ShipAddresses { get; set; }
+        public IEnumerable<ShipAddress> ShipAddresses => _shipAddress;
         public IEnumerable<FeedBack> FeedBacks { get; set; }
-        public IEnumerable<Cart> Carts { get; set; }
+        public IEnumerable<Cart> Carts => _carts;
         internal static Result<User> Create(string name, DateTime dateOfBirth, string gender, string address, Guid imageId, Account account)
         {
             var user = new User(name, dateOfBirth, gender, address, imageId, account);
             return user;
         }
+        public Result<User> AddToCart(Cart cart)
+        {
+            _carts.Add(cart);
+            return this;
+        }
+        public Result<User> AddShipAddress(ShipAddress shipAddress)
+        {
+            _shipAddress.Add(shipAddress);
+            return this;
+        } 
+
     }
 }
