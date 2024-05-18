@@ -62,7 +62,14 @@ namespace Ewamall.WebAPI.Services.Implements
             var productSellDetail = request.ProductSellCommand;
             if (productSellDetail is not null)
             {
-                product.AddProductSellDetail((IEnumerable<ProductSellDetail>)productSellDetail);
+                foreach (var item in productSellDetail)
+                {
+                    if (item.ParentNodeId == 0)
+                    {
+                        item.ParentNodeId = null;
+                    }
+                }
+                product.AddProductSellDetail(_mapper.Map<IEnumerable<ProductSellDetail>>(productSellDetail));
             }
             await _productRepo.AddAsync(product);
             await _unitOfWork.SaveChangesAsync();

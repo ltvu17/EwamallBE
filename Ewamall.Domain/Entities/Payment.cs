@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Ewamall.Domain.Entities
@@ -23,6 +24,7 @@ namespace Ewamall.Domain.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public int? PaymentType { get; set; }
-        public IEnumerable<Order> Orders { get; set; }
+        [JsonIgnore]
+        public IEnumerable<Order>? Orders { get; set; }
     }
 }

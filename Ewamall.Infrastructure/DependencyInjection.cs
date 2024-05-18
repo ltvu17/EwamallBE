@@ -20,10 +20,13 @@ namespace Ewamall.Domain
             });
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<IAccountRepo, AccountRepo>();
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<IShipAddressRepo, ShipAddressRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<ISellerRepo, SellerRepo>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIndustryAggrateRepo, IndustryAggrateRepo>();
+            services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
             return services;
         }
     }

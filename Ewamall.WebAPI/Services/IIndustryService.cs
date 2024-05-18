@@ -8,6 +8,8 @@ namespace Ewamall.WebAPI.Services
     {
         public Task<Result<IEnumerable<Industry>>> GetAllIndustry();
         public Task<Result<Industry>> CreateIndustry(CreateIndustryAndDetailCommand request);
+        public Task<Result<Industry>> UpdateIndustry(int id, CreateIndustryAndDetailCommand request);
+        public Task<Result<bool>> DeleteIndustry(int id);
         
     }
 }

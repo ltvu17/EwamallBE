@@ -1,4 +1,5 @@
-﻿using Ewamall.Business.IRepository;
+﻿using AutoMapper;
+using Ewamall.Business.IRepository;
 using Ewamall.Domain.Entities;
 using Ewamall.Domain.Shared;
 using Ewamall.WebAPI.DTOs;
@@ -9,11 +10,13 @@ namespace Ewamall.WebAPI.Services.Implements
     {
         private readonly IIndustryAggrateRepo _industryRepo;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public IndustryService(IIndustryAggrateRepo industryRepo, IUnitOfWork unitOfWork)
+        public IndustryService(IIndustryAggrateRepo industryRepo, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _industryRepo = industryRepo;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         public async Task<Result<IEnumerable<Industry>>> GetAllIndustry()
         {
@@ -56,6 +59,54 @@ namespace Ewamall.WebAPI.Services.Implements
             await _unitOfWork.SaveChangesAsync();
             return result;
 
+        }
+
+        public async Task<Result<Industry>> UpdateIndustry(int id, CreateIndustryAndDetailCommand request)
+        {
+            var industry = await _industryRepo.GetByIdAsync(id);
+            if(industry is null)
+            {
+                return Result.Failure<Industry>(new Error("UpdateIndustry.GetByIdAsync", "Industry Id is not exist"));
+            }
+            var newindustry = _mapper.Map(request,industry);
+            var industryWithExistDetail = request.ExistDetails;
+            if (industryWithExistDetail != null)
+            {
+                foreach (var detail in industryWithExistDetail)
+                {
+                    newindustry.AddIndustryDetail(detail.DetailId);
+                }
+            }
+            var industryWithNewDetail = request.NewDetails;
+            if (industryWithNewDetail != null)
+            {
+                foreach (var detail in industryWithNewDetail)
+                {
+                    newindustry.AddIndustryDetailWithNewDetail(detail.DetailName, detail.DetailDescription);
+                }
+            }
+            
+            await _industryRepo.UpdateAsync(newindustry);
+            await _unitOfWork.SaveChangesAsync();
+            return newindustry;
+        }
+
+        public async Task<Result<bool>> DeleteIndustry(int id)
+        {
+            var industry = (await _industryRepo.FindAsync(s => s.Id == id, 1, 1, includeProperties: "IndustryDetails")).FirstOrDefault();
+            if(industry is null)
+            {
+                return Result.Failure<bool>(new Error("DeleteIndustry.FindAsync()", "Industry id is not exist"));
+            }
+
+            var industryChild = await _industryRepo.FindAsync(s => s.ParentNodeId == industry.Id, int.MaxValue, 1, includeProperties: "IndustryDetails");
+            if (industryChild is not null)
+            {
+                await _industryRepo.RemoveRange(industryChild);
+            }
+            await _industryRepo.RemoveEntityAsync(industry);
+            await _unitOfWork.SaveChangesAsync();
+            return Result.Success<bool>(true);
         }
     }
 }
