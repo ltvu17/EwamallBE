@@ -62,6 +62,16 @@ namespace Ewamall.Infrastructure.Repository
             }
             else { return false; }
         }
+        public async Task<bool> RemoveEntityAsync(T entity)
+        {
+            _dbSet.Remove(entity);
+            return true;
+        }
+        public async Task<bool> RemoveRange(IEnumerable<T> entities)
+        {
+            _dbSet.RemoveRange(entities);
+            return true;
+        }
 
         public async Task<bool> UpdateAsync(T entity)
         {

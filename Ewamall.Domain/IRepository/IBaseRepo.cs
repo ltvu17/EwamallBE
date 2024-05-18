@@ -20,7 +20,8 @@ namespace Ewamall.Domain.IRepository
         public Task<T> GetByIdAsync(int id);
 
         public Task<bool> RemoveAsync(int id);
-
+        public Task<bool> RemoveEntityAsync(T entity);
+        public Task<bool> RemoveRange(IEnumerable<T> entities);
         public Task<bool> UpdateAsync(T entity);
     }
 }

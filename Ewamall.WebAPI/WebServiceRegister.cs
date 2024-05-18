@@ -3,6 +3,8 @@ using Ewamall.WebAPI.Services;
 using FluentValidation;
 using Ewamall.WebAPI.Common;
 using FluentValidation.AspNetCore;
+using Ewamall.Domain.IRepository;
+using Ewamall.Infrastructure.Repository;
 
 namespace Ewamall.WebAPI
 {
@@ -19,6 +21,10 @@ namespace Ewamall.WebAPI
         public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IIndustryService, IndustryService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped(typeof(IBaseSetupService<>), typeof(BaseSetupService<>));
             services.AddFluentValidation();
             services.AddValidatorsFromAssemblyContaining<IAssemblyMarker>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

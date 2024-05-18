@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ewamall.Business.IRepository
 {
-    public interface IIndustryAggrateRepo : IBaseRepo<Industry>
+    public interface IShipAddressRepo: IBaseRepo<ShipAddress>
     {
-        public bool IsDetailExist(int detailId);
-        public bool IsIndustryExist(int industryId);
     }
 }

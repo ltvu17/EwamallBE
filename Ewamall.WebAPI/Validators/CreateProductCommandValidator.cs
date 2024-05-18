@@ -15,6 +15,7 @@ namespace Ewamall.WebAPI.Validators
             RuleFor(s => s.ProductName).NotNull().NotEmpty();
             RuleFor(s => s.ProductSellDetails).NotNull().NotEmpty();
             RuleFor(s => s.ProductDescription).NotNull().NotEmpty();
+            RuleFor(s => s.ProductSellCommand).NotNull();
         }
     }
 }

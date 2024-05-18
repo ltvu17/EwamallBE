@@ -14,27 +14,32 @@ namespace Ewamall.Domain.Entities
         {
             
         }
-        public ProductSellDetail(int id, string name, float? price, string? inventory, int inventoryNumber, string path, ProductSellDetail? parentNode, Product product) : base(id)
+        internal ProductSellDetail(string name, float? price, int inventoryNumber, Product product)
         {
             Name = name;
             Price = price;
-            Inventory = inventory;
             InventoryNumber = inventoryNumber;
-            Path = path;
-            ParentNode = parentNode;
             Product = product;
         }
 
-        public string Name { get; set; }
-        public float? Price { get; set; }
-        public string? Inventory { get; set; }
-        public int InventoryNumber { get; set; }
-        public string Path { get; set; }
-        public ProductSellDetail? ParentNode { get; set; }
+        public string Name { get; private set; }
+        public float? Price { get; private set; }
+        public string? Inventory { get; private set; }
+        public int InventoryNumber { get; private set; }
+        public string Path { get; private set; }
+        [ForeignKey("ParentNode")]
+        public int? ParentNodeId { get; private set; }
+        public ProductSellDetail? ParentNode { get; private set; }
         [ForeignKey("Product")]
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
-        public IEnumerable<FeedBack> FeedBacks { get; set; }
-        public IEnumerable<Cart> Carts { get; set; }
+        public int ProductId { get; private set; }
+        public Product Product { get; private set; }
+        public IEnumerable<FeedBack> FeedBacks { get; private set; }
+        public IEnumerable<Cart> Carts { get; private set; }
+
+        internal static ProductSellDetail Create(string name, float? price, int inventoryNumber, Product product)
+        {
+            var productSellDetail = new ProductSellDetail(name, price, inventoryNumber, product);
+            return productSellDetail;
+        }
     }
 }

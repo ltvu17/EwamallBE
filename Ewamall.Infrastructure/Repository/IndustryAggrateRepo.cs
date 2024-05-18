@@ -2,6 +2,7 @@
 using Ewamall.Domain.Entities;
 using Ewamall.Infrastructure.Dbcontext;
 using Ewamall.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,18 @@ namespace Ewamall.DataAccess.Repository
         {
             _context = context;
         }
-
+        public override async Task<IEnumerable<Industry>> GetAllAsync()
+        {
+            return await _context.Industries.Include(s=>s.IndustryDetails).ThenInclude(s=>s.Detail).AsNoTracking().ToListAsync();
+        }
         public bool IsDetailExist(int detailId)
         {
             return _context.Details.Any(s => s.Id == detailId);
+        }
+
+        public bool IsIndustryExist(int industryId)
+        {
+            return _context.Industries.Any(s => s.Id == industryId);
         }
     }
 }

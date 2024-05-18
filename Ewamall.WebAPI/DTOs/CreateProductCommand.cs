@@ -1,4 +1,5 @@
 ﻿using Ewamall.Domain.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ewamall.WebAPI.DTOs
 {
@@ -12,8 +13,7 @@ namespace Ewamall.WebAPI.DTOs
         public int IndustryId { get;  set; }
         public int SellerId { get;  set; }
         public List<ProductDetailCommand> ProductSellDetails { get; set; }
-        public ProductSellCommand ProductSellCommand { get; set; }
-
+        public List<ProductSellCommand> ProductSellCommand { get; set; }
     }
     public class ProductDetailCommand
     {
@@ -23,8 +23,10 @@ namespace Ewamall.WebAPI.DTOs
     }
     public class ProductSellCommand
     {
-        public int ProductId { get;  set; }
-        public int DetailId { get;  set; }
-        public string Description { get;  set; }
+        public string Name { get; set; }
+        public float? Price { get; set; }
+        public int InventoryNumber { get; set; }
+        public string Path { get;  set; }
+        public int? ParentNodeId { get;  set; }
     }
 }

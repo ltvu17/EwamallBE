@@ -1,0 +1,49 @@
+﻿using Ewamall.Business.IRepository;
+using Ewamall.Domain.Entities;
+using Ewamall.Domain.IRepository;
+using Ewamall.Infrastructure.Dbcontext;
+using Ewamall.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Ewamall.DataAccess.Repository
+{
+    public class AccountRepo : BaseRepo<Account>, IAccountRepo
+    {
+        private readonly EwamallDBContext _context;
+        public AccountRepo(EwamallDBContext context) : base(context)
+        {
+            _context = context;
+        }
+
+        public bool ConfirmAccount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ConfirmAccount(string email)
+        {
+            var account  = _context.Accounts.FirstOrDefault(x => x.Email == email);
+            if (account != null)
+            {
+                account.IsActive = true;
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public override async Task<IEnumerable<Account>> GetAllAsync()
+        {
+            return await _context.Accounts.Include(s => s.Role).AsNoTracking().ToListAsync();
+        }
+        public bool IsEmailExist(string email)
+        {
+            return _context.Accounts.Any(s => s.Email == email);
+        }
+    }
+}

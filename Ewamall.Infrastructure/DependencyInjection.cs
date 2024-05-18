@@ -19,8 +19,12 @@ namespace Ewamall.Domain
                 options.UseSqlServer(connectionString);
             });
             services.AddScoped<IProductRepo, ProductRepo>();
+            services.AddScoped<IAccountRepo, AccountRepo>();
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<IShipAddressRepo, ShipAddressRepo>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIndustryAggrateRepo, IndustryAggrateRepo>();
+            services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
             return services;
         }
     }

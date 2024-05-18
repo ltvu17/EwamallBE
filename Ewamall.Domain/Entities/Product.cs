@@ -1,4 +1,5 @@
 ﻿using Ewamall.Domain.Primitives;
+using Ewamall.Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,6 +12,7 @@ namespace Ewamall.Domain.Entities
     public sealed class Product : Entity
     {
         internal List<ProductDetail> _productSellDetails = new List<ProductDetail>();
+        internal List<ProductSellDetail> _productSellerDetails = new List<ProductSellDetail>();
         protected Product()
         {
             
@@ -35,18 +37,24 @@ namespace Ewamall.Domain.Entities
         public int IndustryId { get; private set; }
         public Industry Industry { get; private set; }
         public IEnumerable<ProductDetail> ProductSellDetails => _productSellDetails;
+        public IEnumerable<ProductSellDetail> ProductSellerDetails => _productSellerDetails;
         [ForeignKey("Seller")]
         public int SellerId { get; private set; }
         public Seller Seller { get; private set; }
 
-        public static Product Create(string productName, string productDescription, Guid coverImageId, Guid imagesId, Guid videoId, int industryId, int sellerId)
+        public static Result<Product> Create(string productName, string productDescription, Guid coverImageId, Guid imagesId, Guid videoId, int industryId, int sellerId)
         {
             var product = new Product(productName,productDescription, coverImageId, imagesId, videoId ,industryId, sellerId);
             return product;
         }
-        public Product AddProductDetail(int productDetailId, string description)
+        public Result<Product> AddProductDetail(int productDetailId, string description)
         {
             _productSellDetails.Add(ProductDetail.Create(this, productDetailId, description));
+            return this;
+        }
+        public Result<Product> AddProductSellDetail(IEnumerable<ProductSellDetail> items)
+        {
+            _productSellerDetails.AddRange(items);
             return this;
         }
     }
