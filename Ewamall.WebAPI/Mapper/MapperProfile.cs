@@ -14,6 +14,7 @@ namespace Ewamall.WebAPI.Mapper
 
             CreateMap<CreateProductCommand, Product>();
             CreateMap<ProductDetailCommand, ProductDetail>();
+            CreateMap<ProductSellCommand, ProductSellDetail>();
         }
     }
 }

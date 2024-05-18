@@ -23,5 +23,10 @@ namespace Ewamall.DataAccess.Repository
         {
             return _context.Details.Any(s => s.Id == detailId);
         }
+
+        public bool IsIndustryExist(int industryId)
+        {
+            return _context.Industries.Any(s => s.Id == industryId);
+        }
     }
 }
