@@ -8,7 +8,6 @@ namespace Ewamall.WebAPI.DTOs
         public string Password { get; set; }
         public string? EmailConfirmed { get; set; }
         public string PhoneNumber { get; set; }
-        public bool IsActive { get; set; } = true;
         public UserInformation UserInformation { get; set; }
     }
     public class UserInformation
@@ -18,6 +17,20 @@ namespace Ewamall.WebAPI.DTOs
         public GenderEnum Gender { get; set; }
         public string Address { get; set; }
         public Guid ImageId { get; set; }
+    }
+
+    public class CreateSeller
+    {
+        public string ShopName { get; set; }
+        public string Address { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class CreateWallet
+    {
+        public float Balance { get; set; }
     }
 
 }

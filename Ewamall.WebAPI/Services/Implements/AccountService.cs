@@ -12,13 +12,17 @@ namespace Ewamall.WebAPI.Services.Implements
     public class AccountService : IAccountService
     {
         private readonly IAccountRepo _accountRepo;
+        private readonly IUserRepo _userRepo;
+        private readonly ISellerRepo _sellerRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public AccountService(IAccountRepo accountRepo, IUnitOfWork unitOfWork, IMapper mapper)
+        public AccountService(IAccountRepo accountRepo, IUnitOfWork unitOfWork, IMapper mapper, IUserRepo userRepo, ISellerRepo sellerRepo)
         {
             _accountRepo = accountRepo;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _userRepo = userRepo;
+            _sellerRepo = sellerRepo;
         }
         public async Task<Result<IEnumerable<Account>>> GetAllAccount()
         {
@@ -60,17 +64,66 @@ namespace Ewamall.WebAPI.Services.Implements
 
         public async Task<Result<bool>> ConfirmAccount(string email)
         {
-            var result = _accountRepo.ConfirmAccount(email);
-            if (!result)
+            var checkEmailExist = _accountRepo.IsEmailExist( email );
+
+            if (!checkEmailExist)
             {
-                return (Result<bool>)Result.Failure(new Error("Confirm account", "Fail to confirm account"));
+                return Result.Failure<bool>(new Error("Confirm account", "Email not existed!"));
             }
-            return Result.Success(true);
+            var result = _accountRepo.ConfirmAccount(email);
+            return result;
         }
 
-        public Task<Result<bool>> Login(Login request)
+        public async Task<Result<AuthenticationResponse>> Login(Authentication request)
         {
-            throw new NotImplementedException();
+            var result =  _accountRepo.GetAccountLogin(request.Email, request.Password);
+            var loginResponse = _mapper.Map<AuthenticationResponse>(result);
+
+            if (result is null)
+            {
+                return Result.Failure<AuthenticationResponse>(new Error("User login", "Fail to login account"));
+            }
+            if (!result.IsActive)
+            {
+                return Result.Failure<AuthenticationResponse>(new Error("User login", "This account inactive"));
+            }
+            return loginResponse;
+        }
+
+        public async Task<Result<Seller>> RegisterSeller(int userId, CreateSeller request)
+        {
+            var user = await _userRepo.GetByIdAsync(userId);
+
+            if (user is null)
+            {
+                return Result.Failure<Seller>(new Error("Register Seller", "Can not find user"));
+            }
+
+            var sellerResult = Seller.Create(
+                request.ShopName,
+                request.Address,
+                request.PhoneNumber,
+                request.Email,
+                request.Description,
+                user
+                );
+            var seller = sellerResult.Value;
+            seller.AddWallet(
+                0
+                );
+            await _sellerRepo.AddAsync( seller );
+            await _unitOfWork.SaveChangesAsync();
+            // update role
+            var account = await _accountRepo.GetByIdAsync(seller.User.AccountId);
+            if (account is null)
+            {
+                return Result.Failure<Seller>(new Error("Update role for user", "Can not find account"));
+            }
+            account.RoleId = 3;
+            await _accountRepo.UpdateAsync( account );
+            await _unitOfWork.SaveChangesAsync();
+
+            return seller;
         }
     }
 }

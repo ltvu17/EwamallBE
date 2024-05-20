@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Ewamall.Domain.Entities
 {
-    public sealed class Role: Entity
+    public class Role: Entity
     {
         protected Role()
         {
             
         }
-        public Role(int id, string roleName, string description) : base(id)
+        internal Role(int id, string roleName, string description) : base(id)
         {
             RoleName = roleName;
             Description = description;
@@ -21,6 +22,6 @@ namespace Ewamall.Domain.Entities
 
         public string RoleName { get; set; }
         public string Description { get; set; }
-        public IEnumerable<Account> Accounts { get; set; }    
+        public virtual IEnumerable<Account> Accounts { get; set; }    
     }
 }

@@ -45,5 +45,25 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] Authentication login)
+        {
+            var result = await _accountService.Login(login);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpPost("RegisterSeller")]
+        public async Task<IActionResult> RegisterSeller([FromQuery] int userId, [FromBody] CreateSeller request)
+        {
+            var result = await _accountService.RegisterSeller(userId, request);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
     }
 }

@@ -15,5 +15,7 @@ namespace Ewamall.WebAPI.Services
         public Task<Result<ShipAddress>> UpdateUserShipAddress(int shipAddressId, CreateShipAddressCommand request);
         public Task<Result<ShipAddress>> CreateUserShipAddress(int userId, CreateShipAddressCommand request);
         public Task<Result<ShipAddress>> DeleteUserShipAddress(int shipAddressId);
+        // Order Service
+        public Task<Result<Order>> CreateOrder(int userId, CreateOrderCommand request);
     }
 }

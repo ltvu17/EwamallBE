@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Ewamall.WebAPI.Validators
 {
-    public class LoginValidator : AbstractValidator<Login>
+    public class LoginValidator : AbstractValidator<Authentication>
     {
         public LoginValidator(IAccountRepo accountRepo) {
             RuleFor(s => s.Email)

@@ -1,6 +1,7 @@
 ﻿using Ewamall.Domain.Primitives;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,14 +12,16 @@ namespace Ewamall.Domain.Entities
     {
         public OrderDetail() { }
 
-        public OrderDetail(int id,int quantity, Order order, ProductSellDetail productDetail) :  base(id)
+        internal OrderDetail(int quantity, Order order, ProductSellDetail productDetail)
         {
             Quantity = quantity;
             Order = order;
             ProductSellDetail = productDetail;
         }
-        public int Quantity { get; set; }
-        public Order Order { get; set; }
-        public ProductSellDetail ProductSellDetail { get; set; }
+        public int Quantity { get; private set; }
+        public Order Order { get; private set; }
+        [ForeignKey("ProductSellDetail")]
+        public int ProductSellDetailId { get; private set; }
+        public ProductSellDetail ProductSellDetail { get; private set; }
     }
 }

@@ -9,6 +9,7 @@ namespace Ewamall.WebAPI.Services
         public Task<Result<IEnumerable<Account>>> GetAllAccount();
         public Task<Result<Account>> CreateUserAccount(CreateUserAccount request);
         public Task<Result<bool>> ConfirmAccount(string email);
-        public Task<Result<bool>> Login(Login request);
+        public Task<Result<AuthenticationResponse>> Login(Authentication request);
+        public Task<Result<Seller>> RegisterSeller(int userId, CreateSeller request);
     }
 }

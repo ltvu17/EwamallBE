@@ -8,13 +8,9 @@ using System.Threading.Tasks;
 
 namespace Ewamall.Business.IRepository
 {
-    public interface IAccountRepo : IBaseRepo<Account>
+    public interface ISellerRepo : IBaseRepo<Seller>
     {
         public bool IsEmailExist(string email);
-        /*public bool ConfirmAccount(string email);*/
         public bool IsPhoneExist(string phone);
-        public Account GetAccountLogin(string email, string password);
-        public bool ConfirmAccount(string email);
-
     }
 }

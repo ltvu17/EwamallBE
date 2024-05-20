@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Ewamall.Domain.Entities
 {
-    public sealed class Account : Entity
+    public class Account : Entity
     {
         protected Account()
         {

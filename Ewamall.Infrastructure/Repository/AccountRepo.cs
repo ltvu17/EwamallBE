@@ -19,15 +19,23 @@ namespace Ewamall.DataAccess.Repository
         {
             _context = context;
         }
-
-        public bool ConfirmAccount()
+        public Account GetAccountLogin(string email, string password)
         {
-            throw new NotImplementedException();
+            var account = _context.Accounts.Include(s=>s.Role).AsNoTracking()
+                             .Where(s => s.Email == email && s.Password == password).FirstOrDefault();
+            return account;
         }
-
+        public override async Task<IEnumerable<Account>> GetAllAsync()
+        {
+            return await _context.Accounts.Include(s => s.Role).AsNoTracking().ToListAsync();
+        }
+        public bool IsEmailExist(string email)
+        {
+            return _context.Accounts.Any(s => s.Email == email);
+        }
         public bool ConfirmAccount(string email)
         {
-            var account  = _context.Accounts.FirstOrDefault(x => x.Email == email);
+            var account = _context.Accounts.FirstOrDefault(x => x.Email == email);
             if (account != null)
             {
                 account.IsActive = true;
@@ -37,13 +45,13 @@ namespace Ewamall.DataAccess.Repository
             return false;
         }
 
-        public override async Task<IEnumerable<Account>> GetAllAsync()
+        public bool IsPhoneExist(string phone)
         {
-            return await _context.Accounts.Include(s => s.Role).AsNoTracking().ToListAsync();
+            return _context.Accounts.Any(s => s.PhoneNumber == phone);
         }
-        public bool IsEmailExist(string email)
+        public override async Task<Account> GetByIdAsync(int id)
         {
-            return _context.Accounts.Any(s => s.Email == email);
+            return await _context.Accounts.Where(s => s.Id == id).FirstOrDefaultAsync();
         }
     }
 }
