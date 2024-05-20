@@ -15,14 +15,16 @@ namespace Ewamall.WebAPI.Services.Implements
         private readonly IUserRepo _userRepo;
         private readonly ISellerRepo _sellerRepo;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
-        public AccountService(IAccountRepo accountRepo, IUnitOfWork unitOfWork, IMapper mapper, IUserRepo userRepo, ISellerRepo sellerRepo)
+        public AccountService(IAccountRepo accountRepo, IUnitOfWork unitOfWork, IMapper mapper, IUserRepo userRepo, ISellerRepo sellerRepo, IEmailSender emailSender)
         {
             _accountRepo = accountRepo;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userRepo = userRepo;
             _sellerRepo = sellerRepo;
+            _emailSender = emailSender;
         }
         public async Task<Result<IEnumerable<Account>>> GetAllAccount()
         {
@@ -59,6 +61,24 @@ namespace Ewamall.WebAPI.Services.Implements
                 );
             await _accountRepo.AddAsync( account );
             await _unitOfWork.SaveChangesAsync();
+
+            // Tạo message HTML
+            string htmlMessage = $@"
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Xác thực tài khoản</title>
+        </head>
+        <body>
+            <h2>Xin chào, {account.User.Name}!</h2>
+            <p>Bạn đã tạo tài khoản thành công cho dịch vụ EWaMall của chúng tôi.</p>
+            <p>Vui lòng nhấn vào <a href='https://localhost:7289/api/Account/ConfirmAccount/{account.Email}'>liên kết này</a> để xác thực tài khoản.</p>
+        </body>
+        </html>
+    ";
+
+            await _emailSender.SendEmailAsync(request.Email, "Xác thực đăng kí tài khoản EWaMall", htmlMessage);
+
             return account;
         }
 

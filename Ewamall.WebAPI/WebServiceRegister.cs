@@ -22,6 +22,8 @@ namespace Ewamall.WebAPI
         }
         public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
+            //Mail
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IIndustryService, IndustryService>();
             services.AddScoped<IAccountService, AccountService>();
