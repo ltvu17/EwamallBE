@@ -97,6 +97,16 @@ namespace Ewamall.WebAPI.Controllers
             return Ok(result.Value);
         }
         //Order Service
+        [HttpPost("CreateOrder/{userId}")]
+        public async Task<IActionResult> CreateOrder(int userId, CreateOrderCommand request)
+        {
+            var result = await _userService.CreateOrder(userId, request);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
 
     }
 }

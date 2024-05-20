@@ -129,5 +129,22 @@ namespace Ewamall.WebAPI.Services.Implements
             await _unitOfWork.SaveChangesAsync();
             return oldShipAddress;
         }
+
+        public async Task<Result<Order>> CreateOrder(int userId, CreateOrderCommand request)
+        {
+            var result = Order.Create(request.OrderCode,
+                request.TotalCost,
+                request.ShipCost,
+                request.StatusId,
+                userId,
+                request.ShipAddressId,
+                request.VoucherId,
+                request.PaymentId);
+            if (result.IsFailure)
+            {
+                return Result.Failure<Order>(new Error("CreateOrder.Create()", "Create order error"));
+            }
+            return result;
+        }
     }
 }
