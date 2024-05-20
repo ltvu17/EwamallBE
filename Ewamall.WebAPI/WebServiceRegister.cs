@@ -19,6 +19,7 @@ namespace Ewamall.WebAPI
             IConfiguration config = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true).Build();
             return config["ConnectionStrings"];
+
         }
         public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {

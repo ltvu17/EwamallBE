@@ -10,7 +10,7 @@ namespace Ewamall.WebAPI
 
             // Add services to the container.
             builder.Services
-                .AddInfrastructure(WebServiceRegister.GetConnectionString())
+                .AddInfrastructure(builder.Configuration.GetSection("ConnectionStrings").Value)
                 .AddDependencyInjection();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
