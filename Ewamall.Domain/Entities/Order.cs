@@ -1,6 +1,8 @@
 ﻿using Ewamall.Domain.Primitives;
+using Ewamall.Domain.Shared;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,40 +11,57 @@ namespace Ewamall.Domain.Entities
 {
     public sealed class Order : Entity
     {
+        private List<OrderDetail> _orderDetails = new();
         protected Order()
         {
             
         }
-        public Order(int id, string orderCode, DateTime orderDate, DateTime payDate, DateTime shipDate, float totalCost, float shipCost, DateTime? cancelDate, string cancelReason, OrderStatus status, User user, ShipAddress shipAddress, Voucher voucher, Payment payment) : base(id)
+        internal Order(string orderCode, float totalCost, float shipCost, int statusId, int userId, int shipAddressId, int voucherId, int paymentId)
         {
             OrderCode = orderCode;
-            OrderDate = orderDate;
-            PayDate = payDate; 
-            ShipDate = shipDate;
             TotalCost = totalCost;
             ShipCost = shipCost;
-            CancelDate = cancelDate;
-            CancelReason = cancelReason;
-            Status = status;
-            User = user;
-            ShipAddress = shipAddress;
-            Voucher = voucher;
-            Payment = payment;
+            StatusId = statusId;
+            UserId = userId;
+            ShipAddressId = shipAddressId;
+            VoucherId = voucherId;
+            PaymentId = paymentId;
         }
 
-        public string OrderCode { get; set; }
-        public DateTime OrderDate { get; set; }
-        public DateTime PayDate { get; set; }
-        public DateTime ShipDate { get; set; }
-        public float TotalCost { get; set; }
-        public float ShipCost { get; set; }
-        public DateTime? CancelDate { get; set; }
-        public string CancelReason { get; set; }
-        public OrderStatus Status { get; set; }
-        public User User { get; set; }
-        public ShipAddress ShipAddress { get; set; }    
-        public Voucher? Voucher { get; set; }    
-        public Payment Payment { get; set; }
-        public IEnumerable<OrderDetail> OrderDetails { get; set; } 
+        public string OrderCode { get; private set; }
+        public DateTime OrderDate { get; private set; }
+        public DateTime PayDate { get; private set; }
+        public DateTime ShipDate { get; private set; }
+        public float TotalCost { get; private set; }
+        public float ShipCost { get; private set; }
+        public DateTime? CancelDate { get; private set; }
+        public string CancelReason { get; private set; }
+        [ForeignKey("Status")]
+        public int StatusId { get; private set; }
+        public OrderStatus Status { get; private set; }
+        [ForeignKey("User")]
+        public int UserId { get; private set; } 
+        public User User { get; private set; }
+        [ForeignKey("ShipAddress")]
+        public int ShipAddressId { get; private set; }
+        public ShipAddress ShipAddress { get; private set; }
+        [ForeignKey("Voucher")]
+        public int VoucherId { get; private set; }  
+        public Voucher? Voucher { get; private set; }
+        [ForeignKey("Payment")]
+        public int PaymentId { get; private set; }  
+        public Payment Payment { get; private set; }
+        public IEnumerable<OrderDetail> OrderDetails => _orderDetails;
+
+
+        public static Result<Order> Create(string orderCode, float totalCost, float shipCost, int statusId, int userId, int shipAddressId, int voucherId, int paymentId)
+        {
+            if(totalCost < 0 || shipCost < 0)
+            {
+                return Result.Failure<Order>(new Error("Order.Create()", "Cost Error"));
+            }
+            var Order = new Order( orderCode, totalCost, shipCost, statusId, userId, shipAddressId, voucherId, paymentId);
+            return Order;
+        }
     }
 }
