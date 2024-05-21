@@ -26,6 +26,7 @@ namespace Ewamall.Domain
             services.AddScoped<ISellerRepo, SellerRepo>();
             services.AddScoped<IWalletRepo, WalletRepo>();
             services.AddScoped<IVoucherRepo, VoucherRepo>();
+            services.AddScoped<IOrderRepo, OrderRepo>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIndustryAggrateRepo, IndustryAggrateRepo>();
             services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));

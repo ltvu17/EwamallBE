@@ -63,5 +63,27 @@ namespace Ewamall.Domain.Entities
             var Order = new Order( orderCode, totalCost, shipCost, statusId, userId, shipAddressId, voucherId, paymentId);
             return Order;
         }
+        public Result<Order> AddOrderDetail(int quantity, int productSellDetailId)
+        {
+            var result = OrderDetail.Create(quantity, this, productSellDetailId);
+            if (result.IsFailure)
+            {
+                return Result.Failure<Order>(result.Error);
+            }
+            _orderDetails.Add(result.Value);
+            return this;
+        }
+        public Result<Order> ChangeStatus(int statusId)
+        {
+            StatusId = statusId;
+            return this;
+        }
+        public Result<Order> CancelOrder(int statusId, string cancelReason)
+        {
+            StatusId = statusId;
+            CancelDate = DateTime.Now;
+            CancelReason = cancelReason;
+            return this;
+        }
     }
 }

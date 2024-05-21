@@ -3,24 +3,31 @@ using Ewamall.Business.IRepository;
 using Ewamall.Domain.Entities;
 using Ewamall.Domain.Shared;
 using Ewamall.WebAPI.DTOs;
+using Microsoft.AspNetCore.Http;
 
 namespace Ewamall.WebAPI.Services.Implements
 {
     public class UserService : IUserService
     {
         private readonly ICartRepository _cartRepository;
+        private readonly IBaseSetupService<OrderStatus> _orderStatusService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IShipAddressRepo _shipAddressRepo;
+        private readonly IOrderRepo _orderRepo;
         private readonly IMapper _mapper;
 
         public UserService(ICartRepository cartRepository,
+            IBaseSetupService<OrderStatus> orderStatusService,
             IUnitOfWork unitOfWork,
             IShipAddressRepo shipAddressRepo,
+            IOrderRepo orderRepo,
             IMapper mapper)
         {
             _cartRepository = cartRepository;
+            _orderStatusService = orderStatusService;
             _unitOfWork = unitOfWork;
             _shipAddressRepo = shipAddressRepo;
+            _orderRepo = orderRepo;
             _mapper = mapper;
         }
         public async Task<Result<Cart>> AddToCart(CreateCartCommand request)
@@ -129,7 +136,7 @@ namespace Ewamall.WebAPI.Services.Implements
             await _unitOfWork.SaveChangesAsync();
             return oldShipAddress;
         }
-
+        //OrderService
         public async Task<Result<Order>> CreateOrder(int userId, CreateOrderCommand request)
         {
             var result = Order.Create(request.OrderCode,
@@ -144,7 +151,65 @@ namespace Ewamall.WebAPI.Services.Implements
             {
                 return Result.Failure<Order>(new Error("CreateOrder.Create()", "Create order error"));
             }
+            var orderDetails = request.CreateOrderDetailCommands;
+            var order = result.Value;
+            if (orderDetails != null)
+            {
+                foreach(var orderDetail in orderDetails)
+                {
+                    order.AddOrderDetail(orderDetail.Quantity, orderDetail.ProductSellDetailId);
+
+                }
+            }
+            await _orderRepo.AddAsync(order);
+            await _unitOfWork.SaveChangesAsync();
             return result;
         }
-    }
+
+        public async Task<Result<Order>> AcceptOrder(int orderId, string statusCode)
+        {
+            var order = await _orderRepo.GetByIdAsync(orderId);
+            if (order == null)
+            {
+                return Result.Failure<Order>(new Error("CreateOrder.AcceptOrder()", "Not found order"));
+            }
+            var orderStatus = (await _orderStatusService.GetAllAsync()).Value.FirstOrDefault(x => x.Description.Equals(statusCode,StringComparison.OrdinalIgnoreCase));
+            if (orderStatus == null)
+            {
+                return Result.Failure<Order>(new Error("CreateOrder.AcceptOrder()", "Order status not found"));
+            }
+            order.ChangeStatus(orderStatus.Id);
+            await _orderRepo.UpdateAsync(order);
+            await _unitOfWork.SaveChangesAsync();
+            return order;
+        }
+
+        public async Task<Result<Order>> CancelOrder(int orderId, string cancelReason)
+        {
+            var order = await _orderRepo.GetByIdAsync(orderId);
+            if (order == null)
+            {
+                return Result.Failure<Order>(new Error("CreateOrder.CancelOrder()", "Not found order"));
+            }
+            var orderStatus = (await _orderStatusService.GetAllAsync()).Value.FirstOrDefault(x => x.Description.Equals("Cancel", StringComparison.OrdinalIgnoreCase));
+            if (orderStatus == null)
+            {
+                return Result.Failure<Order>(new Error("CreateOrder.CancelOrder()", "Order status not found"));
+            }
+            order.CancelOrder(orderStatus.Id, cancelReason);
+            await _orderRepo.UpdateAsync(order);
+            await _unitOfWork.SaveChangesAsync();
+            return order;
+        }
+
+        public async Task<Result<IEnumerable<Order>>> GetOrderByUserId(int userId)
+        {
+            var orders = (await _orderRepo.FindAsync(x => x.UserId == userId, int.MaxValue, 1)).ToList();
+            if (orders == null)
+            {
+                return Result.Failure<IEnumerable<Order>>(new Error("GetOrderByUserId.FindAsync()", "Not found order"));
+            }
+            return orders;
+        }
+    } 
 }
