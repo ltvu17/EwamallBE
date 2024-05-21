@@ -120,5 +120,25 @@ namespace Ewamall.WebAPI.Services.Implements
             await _unitOfWork.SaveChangesAsync();
             return product;
         }
+
+        public async Task<Result<IEnumerable<Product>>> GetProductBySellerId(int sellerId)
+        {
+            var product = (await _productRepo.FindAsync(x => x.SellerId == sellerId, int.MaxValue, 1)).ToList();
+            if(product.Count == 0)
+            {
+                    return Result.Failure<IEnumerable<Product>>(new Error("GetProductBySellerId.FindAsync()", "Product not found"));      
+            }
+            return product;
+        }
+
+        public async Task<Result<IEnumerable<Product>>> GetProductId(int productId)
+        {
+            var product = (await _productRepo.FindAsync(x => x.Id == productId, int.MaxValue, 1)).ToList();
+            if (product.Count == 0)
+            {
+                return Result.Failure<IEnumerable<Product>>(new Error("GetProductBySellerId.FindAsync()", "Product not found"));
+            }
+            return product;
+        }
     }
 }
