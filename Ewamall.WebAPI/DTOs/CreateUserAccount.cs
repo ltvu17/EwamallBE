@@ -33,4 +33,10 @@ namespace Ewamall.WebAPI.DTOs
         public float Balance { get; set; }
     }
 
+    public class UpdateUserAccount
+    {
+        public string Password { get; set; }
+        public UserInformation UserInformation { get; set; }
+    }
+
 }

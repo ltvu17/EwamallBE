@@ -1,4 +1,6 @@
 using Ewamall.Domain;
+using Ewamall.WebAPI.Services;
+using Ewamall.WebAPI.Services.Implements;
 
 namespace Ewamall.WebAPI
 {
@@ -12,6 +14,7 @@ namespace Ewamall.WebAPI
             builder.Services
                 .AddInfrastructure(builder.Configuration.GetSection("ConnectionStrings").Value)
                 .AddDependencyInjection();
+
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
