@@ -12,6 +12,7 @@ namespace Ewamall.WebAPI.Mapper
             CreateMap<AuthenticationResponse, Account>();
             CreateMap<Account, AuthenticationResponse>();
             CreateMap<Role, RoleDTO>();
+            CreateMap<CreateVoucherCommand, Voucher>();
 
             CreateMap<CreateProductCommand, Product>();
             CreateMap<ProductDetailCommand, ProductDetail>();
