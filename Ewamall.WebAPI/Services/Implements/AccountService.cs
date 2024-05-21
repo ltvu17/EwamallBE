@@ -147,7 +147,7 @@ namespace Ewamall.WebAPI.Services.Implements
             return seller;
         }
 
-        public async Task<Result<Account>> UpdateUserAccount(int accountId, CreateUserAccount request)
+        public async Task<Result<Account>> UpdateUserAccount(int accountId, UpdateUserAccount request)
         {
             var account = await _accountRepo.GetByIdAsync(accountId);
             if(account is null)

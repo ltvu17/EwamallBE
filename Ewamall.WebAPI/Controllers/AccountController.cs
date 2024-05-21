@@ -65,8 +65,8 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
-        [HttpPut("UpdateUserAccount/{id}")]
-        public async Task<IActionResult> UpdateUserAccount(int userId, [FromBody] CreateUserAccount request)
+        [HttpPut("UpdateUserAccount/{userId}")]
+        public async Task<IActionResult> UpdateUserAccount(int userId, [FromBody] UpdateUserAccount request)
         {
             var result = await _accountService.UpdateUserAccount(userId, request);
             if (result.IsFailure)
@@ -75,7 +75,7 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
-        [HttpPut("UpdateSeller/{id}")]
+        [HttpPut("UpdateSeller/{sellerId}")]
         public async Task<IActionResult> UpdateSeller(int sellerId, [FromBody] CreateSeller request)
         {
             var result = await _accountService.UpdateSellerAccount(sellerId, request);
