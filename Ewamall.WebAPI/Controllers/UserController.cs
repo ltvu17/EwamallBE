@@ -107,6 +107,35 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
-
+        [HttpPost("AcceptOrder/{orderId}")]
+        public async Task<IActionResult> AcceptOrder(int orderId, string statusCode)
+        {
+            var result = await _userService.AcceptOrder(orderId, statusCode);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            } 
+            return Ok(result.Value);
+        }
+        [HttpPost("CancelOrder/{orderId}")]
+        public async Task<IActionResult> CancelOrder(int orderId, string cancelReason)
+        {
+            var result = await _userService.CancelOrder(orderId, cancelReason);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpPost("GetOrderByUserId/{userId}")]
+        public async Task<IActionResult> GetOrderByUserId(int userId)
+        {
+            var result = await _userService.GetOrderByUserId(userId);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
     }
 }

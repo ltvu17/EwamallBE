@@ -23,6 +23,26 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpGet("GetProductBySellerId/{sellerId}")]
+        public async Task<IActionResult> GetProductBySellerId(int sellerId)
+        {
+            var result = await _productService.GetProductBySellerId(sellerId);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpGet("GetProductById/{productId}")]
+        public async Task<IActionResult> GetProductById(int productId)
+        {
+            var result = await _productService.GetProductId(productId);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
         [HttpPost("CreateProduct")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateProductCommand request)
         {
