@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Ewamall.Business.Enums;
 using Ewamall.Business.IRepository;
+using Ewamall.DataAccess.Repository;
 using Ewamall.Domain.Entities;
 using Ewamall.Domain.IRepository;
 using Ewamall.Domain.Shared;
@@ -144,6 +145,33 @@ namespace Ewamall.WebAPI.Services.Implements
             await _unitOfWork.SaveChangesAsync();
 
             return seller;
+        }
+
+        public async Task<Result<Account>> UpdateUserAccount(int accountId, CreateUserAccount request)
+        {
+            var account = await _accountRepo.GetByIdAsync(accountId);
+            if(account is null)
+            {
+                return Result.Failure<Account>(new Error("Update User", "Can not find user"));
+            }
+            var updateUserAccount = _mapper.Map(request, account);
+
+            await _accountRepo.UpdateAsync(updateUserAccount);
+            await _unitOfWork.SaveChangesAsync();
+            return updateUserAccount;
+        }
+
+        public async Task<Result<Seller>> UpdateSellerAccount(int sellerId, CreateSeller request)
+        {
+            var seller = await _sellerRepo.GetByIdAsync(sellerId);
+            if(seller is null)
+            {
+                return Result.Failure<Seller>(new Error("Update seller", "can not find seller"));
+            }
+            var updateSeller = _mapper.Map(request, seller);
+            await _sellerRepo.UpdateAsync(updateSeller);
+            await _unitOfWork.SaveChangesAsync();
+            return updateSeller;
         }
     }
 }
