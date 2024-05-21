@@ -127,7 +127,7 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
-        [HttpPost("GetOrderByUserId/{userId}")]
+        [HttpGet("GetOrderByUserId/{userId}")]
         public async Task<IActionResult> GetOrderByUserId(int userId)
         {
             var result = await _userService.GetOrderByUserId(userId);
