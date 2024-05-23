@@ -20,5 +20,6 @@ namespace Ewamall.WebAPI.Services
         public Task<Result<Order>> AcceptOrder(int orderId, string statusCode);
         public Task<Result<Order>> CancelOrder(int orderId, string cancelReason);
         public Task<Result<IEnumerable<Order>>> GetOrderByUserId(int userId);
+        public Task<Result<IEnumerable<Order>>> GetOrderBySellerId(int sellerId);
     }
 }
