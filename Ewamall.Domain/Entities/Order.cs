@@ -46,7 +46,7 @@ namespace Ewamall.Domain.Entities
         public int ShipAddressId { get; private set; }
         public ShipAddress ShipAddress { get; private set; }
         [ForeignKey("Voucher")]
-        public int VoucherId { get; private set; }  
+        public int? VoucherId { get; private set; }  
         public Voucher? Voucher { get; private set; }
         [ForeignKey("Payment")]
         public int PaymentId { get; private set; }  
@@ -61,6 +61,12 @@ namespace Ewamall.Domain.Entities
                 return Result.Failure<Order>(new Error("Order.Create()", "Cost Error"));
             }
             var Order = new Order( orderCode, totalCost, shipCost, statusId, userId, shipAddressId, voucherId, paymentId);
+            if(voucherId == 0)
+            {
+                Order.VoucherId = null;
+            }
+            Order.OrderDate = DateTime.Now;
+            Order.CancelReason = "";
             return Order;
         }
         public Result<Order> AddOrderDetail(int quantity, int productSellDetailId)

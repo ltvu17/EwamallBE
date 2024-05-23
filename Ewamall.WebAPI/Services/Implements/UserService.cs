@@ -204,10 +204,19 @@ namespace Ewamall.WebAPI.Services.Implements
 
         public async Task<Result<IEnumerable<Order>>> GetOrderByUserId(int userId)
         {
-            var orders = (await _orderRepo.FindAsync(x => x.UserId == userId, int.MaxValue, 1)).ToList();
-            if (orders == null)
+            var orders = (await _orderRepo.GetOrderByUserId(userId)).ToList();
+            if (orders == null) 
             {
                 return Result.Failure<IEnumerable<Order>>(new Error("GetOrderByUserId.FindAsync()", "Not found order"));
+            }
+            return orders;
+        }
+        public async Task<Result<IEnumerable<Order>>> GetOrderBySellerId(int sellerId)
+        {
+            var orders = (await _orderRepo.GetOrderBySellerId(sellerId)).ToList();
+            if (orders == null)
+            {
+                return Result.Failure<IEnumerable<Order>>(new Error("GetOrderBySellerId.FindAsync()", "Not found order"));
             }
             return orders;
         }

@@ -8,7 +8,7 @@
         public int StatusId { get;  set; }
         public int ShipAddressId { get;  set; }
         public int VoucherId { get;  set; }
-        public int PaymentId { get; private set; }
+        public int PaymentId { get; set; }
         public IEnumerable<CreateOrderDetailCommand> CreateOrderDetailCommands { get; set; }
     }
      public class CreateOrderDetailCommand

@@ -64,10 +64,10 @@ namespace Ewamall.WebAPI.Services.Implements
         public async Task<Result<T>> UpdateAsync(int id, T entity)
         {
             var oldEntity = await _baseRepo.GetByIdAsync(id);
-            var newEntity = _mapper.Map<T>(oldEntity);
-            await _baseRepo.UpdateAsync(newEntity);
+            oldEntity = _mapper.Map(entity,oldEntity);
+            await _baseRepo.UpdateAsync(oldEntity);
             await _unitOfWork.SaveChangesAsync();
-            return Result.Success<T>(newEntity);
+            return Result.Success<T>(oldEntity);
         }
     }
 }

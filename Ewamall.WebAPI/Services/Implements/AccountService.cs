@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Ewamall.Business.Enums;
 using Ewamall.Business.IRepository;
+using Ewamall.DataAccess.Repository;
 using Ewamall.Domain.Entities;
 using Ewamall.Domain.IRepository;
 using Ewamall.Domain.Shared;
@@ -15,14 +16,16 @@ namespace Ewamall.WebAPI.Services.Implements
         private readonly IUserRepo _userRepo;
         private readonly ISellerRepo _sellerRepo;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
-        public AccountService(IAccountRepo accountRepo, IUnitOfWork unitOfWork, IMapper mapper, IUserRepo userRepo, ISellerRepo sellerRepo)
+        public AccountService(IAccountRepo accountRepo, IUnitOfWork unitOfWork, IMapper mapper, IUserRepo userRepo, ISellerRepo sellerRepo, IEmailSender emailSender)
         {
             _accountRepo = accountRepo;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userRepo = userRepo;
             _sellerRepo = sellerRepo;
+            _emailSender = emailSender;
         }
         public async Task<Result<IEnumerable<Account>>> GetAllAccount()
         {
@@ -59,6 +62,24 @@ namespace Ewamall.WebAPI.Services.Implements
                 );
             await _accountRepo.AddAsync( account );
             await _unitOfWork.SaveChangesAsync();
+
+            // Tạo message HTML
+            string htmlMessage = $@"
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Xác thực tài khoản</title>
+        </head>
+        <body>
+            <h2>Xin chào, {account.User.Name}!</h2>
+            <p>Bạn đã tạo tài khoản thành công cho dịch vụ EWaMall của chúng tôi.</p>
+            <p>Vui lòng nhấn vào <a href='https://localhost:7289/api/Account/ConfirmAccount/{account.Email}'>liên kết này</a> để xác thực tài khoản.</p>
+        </body>
+        </html>
+    ";
+
+            await _emailSender.SendEmailAsync(request.Email, "Xác thực đăng kí tài khoản EWaMall", htmlMessage);
+
             return account;
         }
 
@@ -124,6 +145,33 @@ namespace Ewamall.WebAPI.Services.Implements
             await _unitOfWork.SaveChangesAsync();
 
             return seller;
+        }
+
+        public async Task<Result<Account>> UpdateUserAccount(int accountId, UpdateUserAccount request)
+        {
+            var account = await _accountRepo.GetByIdAsync(accountId);
+            if(account is null)
+            {
+                return Result.Failure<Account>(new Error("Update User", "Can not find user"));
+            }
+            var updateUserAccount = _mapper.Map(request, account);
+
+            await _accountRepo.UpdateAsync(updateUserAccount);
+            await _unitOfWork.SaveChangesAsync();
+            return updateUserAccount;
+        }
+
+        public async Task<Result<Seller>> UpdateSellerAccount(int sellerId, CreateSeller request)
+        {
+            var seller = await _sellerRepo.GetByIdAsync(sellerId);
+            if(seller is null)
+            {
+                return Result.Failure<Seller>(new Error("Update seller", "can not find seller"));
+            }
+            var updateSeller = _mapper.Map(request, seller);
+            await _sellerRepo.UpdateAsync(updateSeller);
+            await _unitOfWork.SaveChangesAsync();
+            return updateSeller;
         }
     }
 }

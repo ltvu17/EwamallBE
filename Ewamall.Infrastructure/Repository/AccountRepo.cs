@@ -36,13 +36,9 @@ namespace Ewamall.DataAccess.Repository
         public bool ConfirmAccount(string email)
         {
             var account = _context.Accounts.FirstOrDefault(x => x.Email == email);
-            if (account != null)
-            {
-                account.IsActive = true;
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
+            account.IsActive = true;
+            _context.SaveChanges();
+            return true;
         }
 
         public bool IsPhoneExist(string phone)
