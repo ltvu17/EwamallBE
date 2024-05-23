@@ -137,5 +137,15 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpGet("GetOrderBySellerId/{sellerId}")]
+        public async Task<IActionResult> GetOrderBySellerId(int sellerId)
+        {
+            var result = await _userService.GetOrderBySellerId(sellerId);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
     }
 }
