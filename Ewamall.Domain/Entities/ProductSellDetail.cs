@@ -31,6 +31,7 @@ namespace Ewamall.Domain.Entities
         [ForeignKey("ParentNode")]
         public int? ParentNodeId { get; private set; }
         public ProductSellDetail? ParentNode { get; private set; }
+        public int LocalId { get; private set; }
         [ForeignKey("Product")]
         public int ProductId { get; private set; }
         public Product Product { get; private set; }

@@ -41,6 +41,7 @@ namespace Ewamall.Domain.Entities
         [ForeignKey("Seller")]
         public int SellerId { get; private set; }
         public Seller Seller { get; private set; }
+        public int ProductStatus { get; private set; } = 1;
 
         public static Result<Product> Create(string productName, string productDescription, Guid coverImageId, Guid imagesId, Guid videoId, int industryId, int sellerId)
         {

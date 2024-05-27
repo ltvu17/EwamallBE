@@ -25,12 +25,12 @@ namespace Ewamall.WebAPI.Services.Implements
             _mapper = mapper;
         }
 
-        public async Task<Result<IEnumerable<Product>>> GetAllProduct()
+        public async Task<Result<IEnumerable<ProductDTO>>> GetAllProduct()
         {
-            Result<IEnumerable<Product>> result = (await _productRepo.GetAllAsync()).ToList();
+            Result<IEnumerable<ProductDTO>> result = (await _productRepo.GetAllDTOAsync()).ToList();
             if (result.IsFailure)
             {
-                return Result.Failure<IEnumerable<Product>>(new Error("IEnumerable<Product>.GetAll()", "Fail to load product"));
+                return Result.Failure<IEnumerable<ProductDTO>>(new Error("IEnumerable<ProductDTO>.GetAll()", "Fail to load product"));
             }
             return result;
         }
@@ -131,12 +131,12 @@ namespace Ewamall.WebAPI.Services.Implements
             return product;
         }
 
-        public async Task<Result<IEnumerable<Product>>> GetProductId(int productId)
+        public async Task<Result<Product>> GetProductId(int productId)
         {
-            var product = (await _productRepo.FindAsync(x => x.Id == productId, int.MaxValue, 1)).ToList();
-            if (product.Count == 0)
+            var product = (await _productRepo.GetByIdAsync(productId));
+            if (product == null)
             {
-                return Result.Failure<IEnumerable<Product>>(new Error("GetProductBySellerId.FindAsync()", "Product not found"));
+                return Result.Failure<Product>(new Error("GetProductBySellerId.FindAsync()", "Product not found"));
             }
             return product;
         }
