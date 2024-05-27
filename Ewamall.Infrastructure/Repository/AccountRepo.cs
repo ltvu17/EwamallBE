@@ -21,7 +21,7 @@ namespace Ewamall.DataAccess.Repository
         }
         public Account GetAccountLogin(string email, string password)
         {
-            var account = _context.Accounts.Include(s=>s.Role).AsNoTracking()
+            var account = _context.Accounts.Include(s=>s.Role).Include(s=>s.User).AsNoTracking()
                              .Where(s => s.Email == email && s.Password == password).FirstOrDefault();
             return account;
         }

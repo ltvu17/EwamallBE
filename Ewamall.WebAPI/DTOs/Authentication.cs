@@ -9,9 +9,15 @@
     {
         public string Email { get; set; }
         public RoleDTO Role { get; set; }
+        public UserDTO User { get; set; }
     }
     public class RoleDTO
     {
         public string RoleName { get; set; }
+    }
+    public class UserDTO
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
