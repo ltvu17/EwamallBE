@@ -1,4 +1,5 @@
-﻿using Ewamall.Domain.Entities;
+﻿using Ewamall.Business.Entities;
+using Ewamall.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Ewamall.Infrastructure.Dbcontext
 {
@@ -39,11 +41,13 @@ namespace Ewamall.Infrastructure.Dbcontext
         public DbSet<FeedBack> FeedBacks { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer("Data Source=(local);Initial Catalog=EwamallTestDb; Integrated Security=True;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+                //optionsBuilder.UseSqlServer("Data Source = '116.109.26.89, 1433'; Initial Catalog = EwamallTestDb; User ID = sa; Password = vu27062002; Connect Timeout = 30; Encrypt = False; Trust Server Certificate = False; Application Intent = ReadWrite; Multi Subnet Failover = False");
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

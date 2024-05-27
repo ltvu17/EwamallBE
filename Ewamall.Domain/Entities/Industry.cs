@@ -34,6 +34,7 @@ namespace Ewamall.Domain.Entities
         [ForeignKey("ParentNode")]
         public int? ParentNodeId { get; private set; }
         public Industry? ParentNode { get; private set; }
+        public int LocalId { get; private set; }
         public IEnumerable<IndustryDetail> IndustryDetails => _industryDetails;
 
         public static Result<Industry> Create(string industryName, bool isActive, int level, bool isLeaf, string path, int? parentNodeId)
