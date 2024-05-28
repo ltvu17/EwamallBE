@@ -12,5 +12,6 @@ namespace Ewamall.Business.IRepository
     {
         public bool IsDetailExist(int detailId);
         public bool IsIndustryExist(int industryId);
+        public Task<IEnumerable<Industry>> GetAllIndustriesByRootId(int rootId);
     }
 }
