@@ -24,6 +24,16 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpGet("GetAllSubIndustry/{industryId}")]
+        public async Task<IActionResult> GetAllSubIndustry(int industryId)
+        {
+            var result = await _industryService.GetAllSubIndustry(industryId);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
         [HttpPost("CreateIndustry")]
         public async Task<IActionResult> CreateIndustry(CreateIndustryAndDetailCommand request)
         {
