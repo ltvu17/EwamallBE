@@ -33,6 +33,16 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpPost("GetAllProductsBySearch")]
+        public async Task<IActionResult> GetAllProductsByIndustryId(SearchCommand search)
+        {
+            var result = await _productService.GetAllProductBySearch(search);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
         [HttpGet("GetProductBySellerId/{sellerId}")]
         public async Task<IActionResult> GetProductBySellerId(int sellerId)
         {
