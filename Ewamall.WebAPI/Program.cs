@@ -11,8 +11,9 @@ namespace Ewamall.WebAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            var connectionString = builder.Configuration.GetSection("ConnectionStrings").Value;
             builder.Services
-                .AddInfrastructure(builder.Configuration.GetSection("ConnectionStrings").Value)
+                .AddInfrastructure(connectionString)
                 .AddDependencyInjection();
 
 
@@ -33,7 +34,7 @@ namespace Ewamall.WebAPI
 
             app.UseAuthorization();
             app.UseCors("CORSPolicy");
-
+            app.AddWebService(connectionString);
 
             app.MapControllers();
 

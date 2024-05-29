@@ -108,6 +108,7 @@ namespace Ewamall.WebAPI.Services.Implements
             {
                 return Result.Failure<AuthenticationResponse>(new Error("User login", "This account inactive"));
             }
+            
             return loginResponse;
         }
 

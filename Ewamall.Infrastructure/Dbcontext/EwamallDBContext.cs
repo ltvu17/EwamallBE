@@ -42,6 +42,7 @@ namespace Ewamall.Infrastructure.Dbcontext
         public DbSet<Product> Products { get; set; }
         public DbSet<Wallet> Wallets { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<HubConnection> HubConnections { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
