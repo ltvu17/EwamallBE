@@ -113,6 +113,9 @@ namespace Ewamall.WebAPI.Services.Implements
                 request.PhoneNumber,
                 request.IsDefault,
                 userId,
+                request.ProvinceId,
+                request.DistrictId,
+                request.WardId,
                 currentUserAddress
                 );
             if (result.IsFailure)
