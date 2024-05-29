@@ -33,7 +33,11 @@ namespace Ewamall.WebAPI
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-            app.UseCors("CORSPolicy");
+            app.UseCors(builder => builder
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .SetIsOriginAllowed(_ => true)
+            .AllowCredentials());
             app.AddWebService(connectionString);
 
             app.MapControllers();
