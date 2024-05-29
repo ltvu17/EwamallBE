@@ -25,6 +25,7 @@ namespace Ewamall.Infrastructure.Repository
                 ProductName = s.ProductName,CoverImageId = s.CoverImageId,ImagesId = s.ImagesId,Industry = s.Industry,IndustryId = s.IndustryId,
                 ProductDescription = s.ProductDescription, SellerId = s.SellerId,SellerName = s.Seller.ShopName, VideoId = s.VideoId
                 ,MinPrice =s.ProductSellerDetails.Where(s=>s.Price > 0 && s.Price != null).OrderBy(s=>s.Price).FirstOrDefault().Price,
+                SellerAddress = s.Seller.Address,
                 Id = s.Id,
             }).AsNoTracking().ToListAsync();
         }
@@ -42,6 +43,7 @@ namespace Ewamall.Infrastructure.Repository
                 SellerId = s.SellerId,
                 SellerName = s.Seller.ShopName,
                 VideoId = s.VideoId,
+                SellerAddress = s.Seller.Address,
                 MinPrice = s.ProductSellerDetails.Where(s => s.Price > 0 && s.Price != null).OrderBy(s => s.Price).FirstOrDefault().Price,
                 Id = s.Id,
             }).AsNoTracking().ToListAsync();
