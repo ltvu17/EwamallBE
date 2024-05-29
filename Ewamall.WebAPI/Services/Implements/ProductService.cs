@@ -4,6 +4,7 @@ using Ewamall.Domain.Entities;
 using Ewamall.Domain.IRepository;
 using Ewamall.Domain.Shared;
 using Ewamall.WebAPI.DTOs;
+using Ewamall.WebAPI.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -167,6 +168,32 @@ namespace Ewamall.WebAPI.Services.Implements
             if(products.Count == 0)
             {
                 return Result.Failure<IEnumerable<ProductDTO>>(new Error("GetAllProductByIndustryId.GetAllDTOByIndustryIdAsync()", "Product not found"));
+            }
+            return products;
+        }
+
+        public async Task<Result<IEnumerable<ProductDTO>>> GetAllProductBySearch(SearchCommand search)
+        {
+            var products = new List<ProductDTO>();
+            List<ProductDTO> allProduct = (List<ProductDTO>)await _productRepo.GetAllDTOAsync();
+            var search1 = allProduct.Where(s => Utils.ConvertToUnSign(s.ProductName).Contains(Utils.ConvertToUnSign(search.SearchValue), StringComparison.CurrentCultureIgnoreCase)).ToList();
+            products.AddRange(search1);
+            allProduct.RemoveAll(s=>search1.Contains(s));
+            List<ProductDTO> search2 = new List<ProductDTO>();
+            foreach(var key in search.SearchValue.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()))
+            {
+                /*                search2.AddRange(allProduct.Where(s => Utils.ConvertToUnSign(s.ProductName).Contains(Utils.ConvertToUnSign(key), StringComparison.CurrentCultureIgnoreCase)).ToList());*/
+                search2.AddRange(allProduct.Where(s =>
+                {
+                    var searchSource = Utils.ConvertToUnSign(s.ProductName).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim().ToLower());
+                    return searchSource.Contains(Utils.ConvertToUnSign(key).ToLower());
+                }).ToList());
+                allProduct.RemoveAll(s => search2.Contains(s));
+            }
+            products.AddRange(search2);
+            if(products.Count == 0)
+            {
+                return Result.Failure<IEnumerable<ProductDTO>>(new Error("GetAllProductBySearch.FindProduct()", "Product not found"));
             }
             return products;
         }

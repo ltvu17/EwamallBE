@@ -14,6 +14,7 @@ namespace Ewamall.WebAPI.Services
     {
         public Task<Result<IEnumerable<ProductDTO>>> GetAllProduct();
         public Task<Result<IEnumerable<ProductDTO>>> GetAllProductByIndustryId(int industryId);
+        public Task<Result<IEnumerable<ProductDTO>>> GetAllProductBySearch(SearchCommand search);
         public Task<Result<Product>> GetProductId(int productId);
         public Task<Result<IEnumerable<Product>>> GetProductBySellerId(int sellerId);
         public Task<Result<Product>> CreateProduct(CreateProductCommand request);
