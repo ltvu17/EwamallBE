@@ -2,19 +2,18 @@
 using Ewamall.Infrastructure.Dbcontext;
 using Ewamall.Business.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Ewamall.DataAccess.Hubs
 {
     public class NotificationHub : Hub
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly EwamallDBContext _dbContext;
+        private EwamallDBContext _dbContext;
 
         public NotificationHub(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            using var scope = _serviceProvider.CreateScope();
-            _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
         }
 
         public async Task SendNotificationToAll(string message)
@@ -24,6 +23,8 @@ namespace Ewamall.DataAccess.Hubs
 
         public async Task SendNotificationToClient(string message, string username)
         {
+            using var scope = _serviceProvider.CreateScope();
+            _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
             var hubConnections = _dbContext.HubConnections.Where(con => con.Username == username).ToList();
             foreach (var hubConnection in hubConnections)
             {
@@ -32,6 +33,8 @@ namespace Ewamall.DataAccess.Hubs
         }
         public async Task SendNotificationToGroup(string message, int group)
         {
+            using var scope = _serviceProvider.CreateScope();
+            _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
             var hubConnections = _dbContext.HubConnections.Join(_dbContext.Accounts, c => c.RoleId, o => o.RoleId, (c, o) => new { c.Username, c.ConnectionId, o.RoleId }).Where(o => o.RoleId == group).ToList();
             foreach (var hubConnection in hubConnections)
             {
@@ -49,6 +52,8 @@ namespace Ewamall.DataAccess.Hubs
 
         public async Task SaveUserConnection(string username)
         {
+            using var scope = _serviceProvider.CreateScope();
+            _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
             var connectionId = Context.ConnectionId;
             HubConnection hubConnection = new HubConnection
             {
@@ -62,6 +67,8 @@ namespace Ewamall.DataAccess.Hubs
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
+            using var scope = _serviceProvider.CreateScope();
+            _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
             var hubConnection = _dbContext.HubConnections.FirstOrDefault(con => con.ConnectionId == Context.ConnectionId);
             if(hubConnection != null)
             {
