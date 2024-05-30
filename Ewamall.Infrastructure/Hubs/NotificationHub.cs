@@ -1,17 +1,23 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Ewamall.Infrastructure.Dbcontext;
 using Ewamall.Business.Entities;
+<<<<<<< HEAD
 using Ewamall.Domain.Entities;
+=======
+using Microsoft.Extensions.DependencyInjection;
+using static System.Formats.Asn1.AsnWriter;
+>>>>>>> 999a9804e59885a9df203e075bc931498f54544f
 
 namespace Ewamall.DataAccess.Hubs
 {
     public class NotificationHub : Hub
     {
-        private readonly EwamallDBContext dbContext;
+        private readonly IServiceProvider _serviceProvider;
+        private EwamallDBContext _dbContext;
 
-        public NotificationHub(EwamallDBContext dbContext)
+        public NotificationHub(IServiceProvider serviceProvider)
         {
-            this.dbContext = dbContext;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task SendNotificationToAll(string message)
@@ -21,7 +27,9 @@ namespace Ewamall.DataAccess.Hubs
 
         public async Task SendNotificationToClient(string message, string username)
         {
-            var hubConnections = dbContext.HubConnections.Where(con => con.Username == username).ToList();
+            using var scope = _serviceProvider.CreateScope();
+            _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
+            var hubConnections = _dbContext.HubConnections.Where(con => con.Username == username).ToList();
             foreach (var hubConnection in hubConnections)
             {
                 await Clients.Client(hubConnection.ConnectionId).SendAsync("ReceivedPersonalNotification", message, username);
@@ -29,7 +37,9 @@ namespace Ewamall.DataAccess.Hubs
         }
         public async Task SendNotificationToGroup(string message, int group)
         {
-            var hubConnections = dbContext.HubConnections.Join(dbContext.Accounts, c => c.RoleId, o => o.RoleId, (c, o) => new { c.Username, c.ConnectionId, o.RoleId }).Where(o => o.RoleId == group).ToList();
+            using var scope = _serviceProvider.CreateScope();
+            _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
+            var hubConnections = _dbContext.HubConnections.Join(_dbContext.Accounts, c => c.RoleId, o => o.RoleId, (c, o) => new { c.Username, c.ConnectionId, o.RoleId }).Where(o => o.RoleId == group).ToList();
             foreach (var hubConnection in hubConnections)
             {
                 string username = hubConnection.Username;
@@ -46,6 +56,8 @@ namespace Ewamall.DataAccess.Hubs
 
         public async Task SaveUserConnection(string username, int roleId)
         {
+            using var scope = _serviceProvider.CreateScope();
+            _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
             var connectionId = Context.ConnectionId;
             HubConnection hubConnection = new HubConnection
             {
@@ -54,17 +66,19 @@ namespace Ewamall.DataAccess.Hubs
                 RoleId = roleId
             };
 
-            dbContext.HubConnections.Add(hubConnection);
-            await dbContext.SaveChangesAsync();
+            _dbContext.HubConnections.Add(hubConnection);
+            await _dbContext.SaveChangesAsync();
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            var hubConnection = dbContext.HubConnections.FirstOrDefault(con => con.ConnectionId == Context.ConnectionId);
-            if(hubConnection != null)
+            using var scope = _serviceProvider.CreateScope();
+            _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
+            var hubConnection = _dbContext.HubConnections.FirstOrDefault(con => con.ConnectionId == Context.ConnectionId);
+            if(hubConnection.Equals(null))
             {
-                dbContext.HubConnections.Remove(hubConnection);
-                dbContext.SaveChangesAsync();
+                _dbContext.HubConnections.Remove(hubConnection);
+                _dbContext.SaveChangesAsync();
             }
 
             return base.OnDisconnectedAsync(exception);
