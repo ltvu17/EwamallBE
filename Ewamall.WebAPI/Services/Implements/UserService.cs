@@ -40,7 +40,10 @@ namespace Ewamall.WebAPI.Services.Implements
             {
                 await _cartRepository.UpdateAsync(cart.Value);
             }
-            await _cartRepository.AddAsync(cart.Value);
+            else
+            {
+                await _cartRepository.AddAsync(cart.Value);
+            }
             await _unitOfWork.SaveChangesAsync();
             return cart;
         }
@@ -113,6 +116,9 @@ namespace Ewamall.WebAPI.Services.Implements
                 request.PhoneNumber,
                 request.IsDefault,
                 userId,
+                request.ProvinceId,
+                request.DistrictId,
+                request.WardId,
                 currentUserAddress
                 );
             if (result.IsFailure)

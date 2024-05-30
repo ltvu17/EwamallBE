@@ -1,12 +1,15 @@
 ﻿
 using Ewamall.Business.IRepository;
+using Ewamall.DataAccess.Hubs;
 using Ewamall.DataAccess.Repository;
 using Ewamall.Domain.IRepository;
 using Ewamall.Infrastructure.Dbcontext;
 using Ewamall.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Ewamall.DataAccess.SubscribeTableDependencies;
+using Ewamall.DataAccess.Hubs;
+using Microsoft.AspNetCore.Builder;
 
 namespace Ewamall.Domain
 {
@@ -17,6 +20,7 @@ namespace Ewamall.Domain
             services.AddDbContext<EwamallDBContext>(options =>
             {
                 options.UseSqlServer(connectionString);
+               
             });
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<IAccountRepo, AccountRepo>();
@@ -31,7 +35,25 @@ namespace Ewamall.Domain
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIndustryAggrateRepo, IndustryAggrateRepo>();
             services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
+            //
+            services.AddSingleton<NotificationHub>();
+            services.AddSingleton<SubscribeNotificationTableDependency>();
+            services.AddSignalR();
             return services;
         }
+        public static WebApplication AddWebService(this WebApplication app, string connectionString)
+        {
+            app.MapHub<NotificationHub>("/notificationHub");
+            app.UseSqlTableDependency<SubscribeNotificationTableDependency>(connectionString);
+            return app;
+        }
+        public static void UseSqlTableDependency<T>(this IApplicationBuilder applicationBuilder, string connectionString)
+           where T : ISubscribeTableDependency
+        {
+            var serviceProvider = applicationBuilder.ApplicationServices;
+            var service = serviceProvider.GetService<T>();
+            service?.SubscribeTableDependency(connectionString);
+        }
+
     }
 }

@@ -108,5 +108,20 @@ namespace Ewamall.WebAPI.Services.Implements
             await _unitOfWork.SaveChangesAsync();
             return Result.Success<bool>(true);
         }
+
+        public async Task<Result<IEnumerable<Industry>>> GetAllSubIndustry(int industryId)
+        {
+            var industry = await _industryRepo.GetByIdAsync(industryId);
+            if(industry.IsLeaf == true)
+            {
+                return Result.Failure<IEnumerable<Industry>>(new Error("GetAllSubIndustry.GetByIdAsync()", "This industry is leaf"));
+            }
+            var industries = (await _industryRepo.FindAsync(s=>s.Level == industry.Level+1 && s.ParentNodeId == industry.ParentNodeId && s.Path.StartsWith(industry.Path), int.MaxValue, 1)).ToList();
+            if(industries.Count == 0)
+            {
+                return Result.Failure<IEnumerable<Industry>>(new Error("GetAllSubIndustry.FindAsync()", "This industries not found"));
+            }
+            return industries;
+        }
     }
 }

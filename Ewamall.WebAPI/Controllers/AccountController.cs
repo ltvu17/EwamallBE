@@ -53,6 +53,7 @@ namespace Ewamall.WebAPI.Controllers
             {
                 return BadRequest(result.Error);
             }
+            
             return Ok(result.Value);
         }
         [HttpPost("RegisterSeller")]

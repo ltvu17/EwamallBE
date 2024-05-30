@@ -10,6 +10,7 @@ namespace Ewamall.Domain.IRepository
     public interface IProductRepo : IBaseRepo<Product>
     {
         public Task<IEnumerable<ProductDTO>> GetAllDTOAsync();
+        public Task<IEnumerable<ProductDTO>> GetAllDTOByIndustryIdAsync(int industryId);
     }
     public class ProductDTO
     {
@@ -26,5 +27,6 @@ namespace Ewamall.Domain.IRepository
         public int SellerId { get;  set; }
         public string SellerName { get;  set; }
         public float? MinPrice { get;  set; }
+        public string SellerAddress { get; set; }
     }
 }

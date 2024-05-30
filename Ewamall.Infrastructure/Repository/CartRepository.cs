@@ -31,7 +31,11 @@ namespace Ewamall.DataAccess.Repository
                     Cost = (float)s.SellDetail.Price,
                     Name = s.SellDetail.Name,
                     Quantity = s.Quantity,
-                    SellerName = s.SellDetail.Product.Seller.ShopName
+                    SellerName = s.SellDetail.Product.Seller.ShopName,
+                    CartId = s.Id,
+                    CoverImageId = s.SellDetail.Product.CoverImageId,
+                    NameProductSellDetail = s.SellDetail.Name,
+                    SellerId = s.SellDetail.Product.SellerId
             }).ToListAsync();
         }
     }

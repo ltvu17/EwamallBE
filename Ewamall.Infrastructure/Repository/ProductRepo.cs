@@ -25,9 +25,30 @@ namespace Ewamall.Infrastructure.Repository
                 ProductName = s.ProductName,CoverImageId = s.CoverImageId,ImagesId = s.ImagesId,Industry = s.Industry,IndustryId = s.IndustryId,
                 ProductDescription = s.ProductDescription, SellerId = s.SellerId,SellerName = s.Seller.ShopName, VideoId = s.VideoId
                 ,MinPrice =s.ProductSellerDetails.Where(s=>s.Price > 0 && s.Price != null).OrderBy(s=>s.Price).FirstOrDefault().Price,
+                SellerAddress = s.Seller.Address,
                 Id = s.Id,
             }).AsNoTracking().ToListAsync();
         }
+
+        public async Task<IEnumerable<ProductDTO>> GetAllDTOByIndustryIdAsync(int industryId)
+        {
+            return await _context.Products.Include(s => s.Seller).IgnoreAutoIncludes().Include(s => s.ProductSellDetails).Include(s => s.Industry).Where(s=>s.IndustryId == industryId).Select(s => new ProductDTO
+            {
+                ProductName = s.ProductName,
+                CoverImageId = s.CoverImageId,
+                ImagesId = s.ImagesId,
+                Industry = s.Industry,
+                IndustryId = s.IndustryId,
+                ProductDescription = s.ProductDescription,
+                SellerId = s.SellerId,
+                SellerName = s.Seller.ShopName,
+                VideoId = s.VideoId,
+                SellerAddress = s.Seller.Address,
+                MinPrice = s.ProductSellerDetails.Where(s => s.Price > 0 && s.Price != null).OrderBy(s => s.Price).FirstOrDefault().Price,
+                Id = s.Id,
+            }).AsNoTracking().ToListAsync();
+        }
+
         public override async Task<Product> GetByIdAsync(int id)
         {
             return await _context.Products.Where(s=>s.Id == id).Include(s => s.Seller).Include(s=>s.ProductSellerDetails).Include(s => s.ProductSellDetails).Include(s => s.Industry).FirstOrDefaultAsync();

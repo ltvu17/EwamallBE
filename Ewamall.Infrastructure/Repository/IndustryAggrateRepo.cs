@@ -23,6 +23,12 @@ namespace Ewamall.DataAccess.Repository
         {
             return await _context.Industries.Include(s=>s.IndustryDetails).ThenInclude(s=>s.Detail).AsNoTracking().ToListAsync();
         }
+
+        public async Task<IEnumerable<Industry>> GetAllIndustriesByRootId(int rootId)
+        {
+            return await _context.Industries.Where(s =>s.ParentNodeId == rootId).ToListAsync();
+        }
+
         public bool IsDetailExist(int detailId)
         {
             return _context.Details.Any(s => s.Id == detailId);
