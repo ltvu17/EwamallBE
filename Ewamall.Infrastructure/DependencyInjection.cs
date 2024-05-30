@@ -38,14 +38,14 @@ namespace Ewamall.Domain
             services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
             //
             services.AddSingleton<NotificationHub>();
-            services.AddSingleton<SubscribeNotificationTableDependency>();
+            //services.AddSingleton<SubscribeNotificationTableDependency>();
             services.AddSignalR();
             return services;
         }
         public static WebApplication AddWebService(this WebApplication app, string connectionString)
         {
             app.MapHub<NotificationHub>("/notificationHub");
-            app.UseSqlTableDependency<SubscribeNotificationTableDependency>(connectionString);
+           // app.UseSqlTableDependency<SubscribeNotificationTableDependency>(connectionString);
             return app;
         }
         public static void UseSqlTableDependency<T>(this IApplicationBuilder applicationBuilder, string connectionString)

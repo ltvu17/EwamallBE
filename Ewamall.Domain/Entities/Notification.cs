@@ -1,4 +1,6 @@
-﻿using Ewamall.Domain.Primitives;
+﻿using Ewamall.Domain.Entities;
+using Ewamall.Domain.Primitives;
+using Ewamall.Domain.Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,8 +17,9 @@ namespace Ewamall.Business.Entities
         {  
         }
 
-        public Notification(string title, string message, DateTime createdAt, string notificationType, int sender, int receiver, int roleId)
+        internal Notification(string userName, string title, string message, DateTime createdAt, string notificationType, int sender, int receiver, int roleId)
         {
+            Username = userName;
             Title = title;
             Message = message;
             CreatedAt = createdAt;
@@ -25,6 +28,7 @@ namespace Ewamall.Business.Entities
             Receiver = receiver;
             RoleId = roleId;
         }
+        public string Username { get; private set; }
 
         public string Title { get; private set; }
         public string Message { get; private set; }
@@ -32,6 +36,12 @@ namespace Ewamall.Business.Entities
         public string NotificationType { get; set; } = null!;
         public int Sender { get; private set; }
         public int Receiver { get; private set; }
-        public int RoleId { get; set; }
+        public int RoleId { get; private set; }
+
+        public static Result<Notification> Create(string userName, string title, string message, DateTime createdAt, string notificationType, int sender, int receiver, int roleId)
+        {
+            var notification = new Notification(userName, title, message, createdAt, notificationType, sender, receiver, roleId);
+            return notification;
+        }
     }
 }

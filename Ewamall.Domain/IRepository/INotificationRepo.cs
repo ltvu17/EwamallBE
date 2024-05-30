@@ -1,4 +1,5 @@
 ﻿using Ewamall.Business.Entities;
+using Ewamall.Domain.Entities;
 using Ewamall.Domain.IRepository;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace Ewamall.Business.IRepository
 {
     public interface INotificationRepo : IBaseRepo<Notification>
     {
+        public Task<IEnumerable<Notification>> GetAllNotificationByUserId(int userId);
     }
 }

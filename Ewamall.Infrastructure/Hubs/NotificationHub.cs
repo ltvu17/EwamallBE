@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Ewamall.Infrastructure.Dbcontext;
 using Ewamall.Business.Entities;
-<<<<<<< HEAD
-using Ewamall.Domain.Entities;
-=======
 using Microsoft.Extensions.DependencyInjection;
-using static System.Formats.Asn1.AsnWriter;
->>>>>>> 999a9804e59885a9df203e075bc931498f54544f
 
 namespace Ewamall.DataAccess.Hubs
 {
@@ -80,7 +75,6 @@ namespace Ewamall.DataAccess.Hubs
                 _dbContext.HubConnections.Remove(hubConnection);
                 _dbContext.SaveChangesAsync();
             }
-
             return base.OnDisconnectedAsync(exception);
         }
     }

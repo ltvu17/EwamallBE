@@ -10,6 +10,6 @@ namespace Ewamall.Business.IRepository
 {
     public interface IUserRepo : IBaseRepo<User>
     {
-
+        public bool IsUserExist(int userId);
     }
 }

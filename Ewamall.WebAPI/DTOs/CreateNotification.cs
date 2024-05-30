@@ -2,12 +2,13 @@
 {
     public class CreateNotification
     {
-        public string Title { get; private set; }
-        public string Message { get; private set; }
-        public DateTime CreatedAt { get; private set; }
+        public string Username { get; set; }
+        public string Title { get; set; }
+        public string Message { get; set; }
+        public DateTime CreatedAt { get; set; }
         public string NotificationType { get; set; } = null!;
-        public int Sender { get; private set; }
-        public int Receiver { get; private set; }
+        public int Sender { get; set; }
+        public int Receiver { get; set; }
         public int RoleId { get; set; }
     }
 }
