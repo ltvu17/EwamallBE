@@ -21,7 +21,7 @@ namespace Ewamall.Domain
             {
                 options.UseSqlServer(connectionString);
                
-            }, ServiceLifetime.Singleton);
+            });
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<IAccountRepo, AccountRepo>();
             services.AddScoped<ICartRepository, CartRepository>();
