@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Ewamall.Infrastructure.Dbcontext;
 using Ewamall.Business.Entities;
+using Ewamall.Domain.Entities;
 
 namespace Ewamall.DataAccess.Hubs
 {
@@ -43,13 +44,14 @@ namespace Ewamall.DataAccess.Hubs
             return base.OnConnectedAsync();
         }
 
-        public async Task SaveUserConnection(string username)
+        public async Task SaveUserConnection(string username, int roleId)
         {
             var connectionId = Context.ConnectionId;
             HubConnection hubConnection = new HubConnection
             {
                 ConnectionId = connectionId,
-                Username = username
+                Username = username,
+                RoleId = roleId
             };
 
             dbContext.HubConnections.Add(hubConnection);

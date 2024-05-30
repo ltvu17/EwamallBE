@@ -14,6 +14,18 @@ namespace Ewamall.Business.Entities
         public Notification()
         {  
         }
+
+        public Notification(string title, string message, DateTime createdAt, string notificationType, int sender, int receiver, int roleId)
+        {
+            Title = title;
+            Message = message;
+            CreatedAt = createdAt;
+            NotificationType = notificationType;
+            Sender = sender;
+            Receiver = receiver;
+            RoleId = roleId;
+        }
+
         public string Title { get; private set; }
         public string Message { get; private set; }
         public DateTime CreatedAt { get; private set; }
