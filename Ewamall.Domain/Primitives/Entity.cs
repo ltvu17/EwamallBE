@@ -18,14 +18,14 @@ namespace Ewamall.Domain.Primitives
         }
         [Key]
         public int Id { get; private init; }
-        public static bool operator ==(Entity? left, Entity? right)
+/*        public static bool operator ==(Entity? left, Entity? right)
         {
             return left is not null && right is not null && left.Equals(right);
-        }
-        public static bool operator !=(Entity? left, Entity? right)
+        }*/
+/*        public static bool operator !=(Entity? left, Entity? right)
         {
-            return !(left == right);
-        }
+            return !(left is not null && right is not null && left.Equals(right));
+        }*/
         public override bool Equals(object? obj)
         {
             if (obj is null)
