@@ -70,7 +70,7 @@ namespace Ewamall.DataAccess.Hubs
             using var scope = _serviceProvider.CreateScope();
             _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
             var hubConnection = _dbContext.HubConnections.FirstOrDefault(con => con.ConnectionId == Context.ConnectionId);
-            if(hubConnection != null)
+            if(hubConnection.Equals(null))
             {
                 _dbContext.HubConnections.Remove(hubConnection);
                 _dbContext.SaveChangesAsync();
