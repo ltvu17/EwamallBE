@@ -24,7 +24,7 @@ namespace Ewamall.Domain.Primitives
         }
         public static bool operator !=(Entity? left, Entity? right)
         {
-            return (left == right);
+            return !(left == right);
         }
         public override bool Equals(object? obj)
         {
