@@ -32,6 +32,7 @@ namespace Ewamall.WebAPI
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<ISellerService, SellerService>();
+            services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped(typeof(IBaseSetupService<>), typeof(BaseSetupService<>));
             services.AddFluentValidation();
             services.AddValidatorsFromAssemblyContaining<IAssemblyMarker>();

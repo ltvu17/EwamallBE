@@ -31,20 +31,21 @@ namespace Ewamall.Domain
             services.AddScoped<IWalletRepo, WalletRepo>();
             services.AddScoped<IVoucherRepo, VoucherRepo>();
             services.AddScoped<IFeedbackRepo, FeedbackRepo>();
+            services.AddScoped<INotificationRepo, NotificationRepo>();
             services.AddScoped<IOrderRepo, OrderRepo>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIndustryAggrateRepo, IndustryAggrateRepo>();
             services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
             //
             services.AddSingleton<NotificationHub>();
-            services.AddSingleton<SubscribeNotificationTableDependency>();
+            //services.AddSingleton<SubscribeNotificationTableDependency>();
             services.AddSignalR();
             return services;
         }
         public static WebApplication AddWebService(this WebApplication app, string connectionString)
         {
             app.MapHub<NotificationHub>("/notificationHub");
-            app.UseSqlTableDependency<SubscribeNotificationTableDependency>(connectionString);
+           // app.UseSqlTableDependency<SubscribeNotificationTableDependency>(connectionString);
             return app;
         }
         public static void UseSqlTableDependency<T>(this IApplicationBuilder applicationBuilder, string connectionString)

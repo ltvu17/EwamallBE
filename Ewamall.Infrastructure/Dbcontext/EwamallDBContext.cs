@@ -47,8 +47,8 @@ namespace Ewamall.Infrastructure.Dbcontext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=(local);Initial Catalog=EwamallTestDb; Integrated Security=True;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
-                //optionsBuilder.UseSqlServer("Data Source = '116.109.26.89, 1433'; Initial Catalog = EwamallTestDb; User ID = sa; Password = vu27062002; Connect Timeout = 30; Encrypt = False; Trust Server Certificate = False; Application Intent = ReadWrite; Multi Subnet Failover = False");
+                //optionsBuilder.UseSqlServer("Data Source=(local);Initial Catalog=EwamallTestDb; Integrated Security=True;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+                optionsBuilder.UseSqlServer("Data Source = '116.109.26.89, 1433'; Initial Catalog = EwamallTestDb; User ID = sa; Password = vu27062002; Connect Timeout = 30; Encrypt = False; Trust Server Certificate = False; Application Intent = ReadWrite; Multi Subnet Failover = False");
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

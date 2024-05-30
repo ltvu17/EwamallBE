@@ -23,5 +23,10 @@ namespace Ewamall.DataAccess.Repository
         {
             return await _context.Users.Where(s => s.Id == id).FirstOrDefaultAsync();
         }
+
+        public bool IsUserExist(int userId)
+        {
+            return _context.Users.Any(s => s.Id == userId);
+        }
     }
 }
