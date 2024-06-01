@@ -11,5 +11,6 @@
         public int SellerId { get; set; }
         public int CartId { get; set; }
         public string NameProductSellDetail { get; set; }
+        public int ProductSellDetailId { get; set; }
     }
 }
