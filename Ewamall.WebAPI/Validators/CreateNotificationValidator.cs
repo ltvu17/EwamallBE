@@ -15,9 +15,6 @@ namespace Ewamall.WebAPI.Validators
             RuleFor(s => s.Sender)
                 .Must(userId => userRepo.IsUserExist(userId))
                 .WithMessage("User not exists.");
-            RuleFor(s => s.Receiver)
-                .Must(userId => userRepo.IsUserExist(userId))
-                .WithMessage("User not exists.");
             RuleFor(s => s.NotificationType).NotNull().NotEmpty()
                 .Must(type => type == "All" || type == "Group" || type == "Personal")
                 .WithMessage("NotificationType must be either 'All', 'Group', or 'Personal'.");

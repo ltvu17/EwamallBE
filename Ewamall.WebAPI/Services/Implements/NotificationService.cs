@@ -36,7 +36,6 @@ namespace Ewamall.WebAPI.Services.Implements
                 request.CreatedAt,
                 request.NotificationType,
                 request.Sender,
-                request.Receiver,
                 request.RoleId
                 );
             if (result.IsFailure)
@@ -75,9 +74,9 @@ namespace Ewamall.WebAPI.Services.Implements
             return result;
         }
 
-        public async Task<Result<IEnumerable<Notification>>> GetAllNotificationByUserId(int userId)
+        public async Task<Result<IEnumerable<Notification>>> GetAllNotificationByUserName(string userName)
         {
-            Result<IEnumerable<Notification>> result = (await _notificationRepo.GetAllNotificationByUserId(userId)).ToList();
+            Result<IEnumerable<Notification>> result = (await _notificationRepo.GetAllNotificationByUserName(userName)).ToList();
             if (result.IsFailure)
             {
                 return Result.Failure<IEnumerable<Notification>>(new Error("IEnumerable<Notification>.GetAll()", "Fail to load notification of user"));

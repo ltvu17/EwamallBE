@@ -8,7 +8,7 @@ namespace Ewamall.WebAPI.Services
     public interface INotificationService
     {
         public Task<Result<IEnumerable<Notification>>> GetAllNotification();
-        public Task<Result<IEnumerable<Notification>>> GetAllNotificationByUserId(int userId);
+        public Task<Result<IEnumerable<Notification>>> GetAllNotificationByUserName(string userName);
         public Task<Result<Notification>> CreateNotification(CreateNotification request);
         public Task<Result<Notification>> UpdateNotification(int id, CreateNotification request);
         public Task<Result<Notification>> DeleteNotification(int id);

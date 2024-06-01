@@ -19,9 +19,9 @@ namespace Ewamall.DataAccess.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<Notification>> GetAllNotificationByUserId(int userId)
+        public async Task<IEnumerable<Notification>> GetAllNotificationByUserName(string userName)
         {
-            return await _context.Notifications.Where(s => s.Receiver == userId).ToListAsync();
+            return await _context.Notifications.Where(s => s.Username == userName).ToListAsync();
         }
     }
 }

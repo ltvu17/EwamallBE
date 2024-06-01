@@ -11,6 +11,6 @@ namespace Ewamall.Business.IRepository
 {
     public interface INotificationRepo : IBaseRepo<Notification>
     {
-        public Task<IEnumerable<Notification>> GetAllNotificationByUserId(int userId);
+        public Task<IEnumerable<Notification>> GetAllNotificationByUserName(string userName);
     }
 }
