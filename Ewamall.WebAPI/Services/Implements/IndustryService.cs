@@ -123,5 +123,15 @@ namespace Ewamall.WebAPI.Services.Implements
             }
             return industries;
         }
+
+        public async Task<Result<Industry>> GetIndustryById(int id)
+        {
+            var industry = await _industryRepo.GetIndustryById(id);
+            if (industry == null)
+            {
+                return Result.Failure<Industry>(new Error("GetIndustryById", "Industry not found"));
+            }
+            return industry;
+        }
     }
 }

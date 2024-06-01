@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Ewamall.Business.Entities;
 using Ewamall.Business.IRepository;
+using Ewamall.DataAccess.Hubs;
 using Ewamall.DataAccess.Repository;
 using Ewamall.Domain.Entities;
 using Ewamall.Domain.IRepository;
@@ -15,13 +16,15 @@ namespace Ewamall.WebAPI.Services.Implements
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
         private readonly IMapper _mapper;
+        private readonly NotificationHub _notificationHub;
 
-        public NotificationService(INotificationRepo notificationRepo, IUnitOfWork unitOfWork, IEmailSender emailSender, IMapper mapper)
+        public NotificationService(INotificationRepo notificationRepo, IUnitOfWork unitOfWork, IEmailSender emailSender, IMapper mapper, NotificationHub notificationHub)
         {
             _notificationRepo = notificationRepo;
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
             _mapper = mapper;
+            _notificationHub = notificationHub;
         }
 
         public async Task<Result<Notification>> CreateNotification(CreateNotification request)
@@ -42,7 +45,11 @@ namespace Ewamall.WebAPI.Services.Implements
             }
             var notification = result.Value;
             await _notificationRepo.AddAsync(notification);
-            await _unitOfWork.SaveChangesAsync();
+
+            if(await _unitOfWork.SaveChangesAsyncResult() > 0 )
+            {
+                SendToClientAsync(notification);
+            }
             return result;
         }
 
@@ -88,8 +95,26 @@ namespace Ewamall.WebAPI.Services.Implements
             }
 
             await _notificationRepo.UpdateAsync(updateNotification);
-            await _unitOfWork.SaveChangesAsync();
+            if (await _unitOfWork.SaveChangesAsyncResult() > 0)
+            {
+                SendToClientAsync(notification);
+            }
             return updateNotification;
+        }
+        private async void SendToClientAsync(Notification notification)
+        {       
+            if (notification.NotificationType == "All")
+            {
+                await _notificationHub.SendNotificationToAll(notification.Message);
+            }
+            else if (notification.NotificationType == "Personal")
+            {
+                await _notificationHub.SendNotificationToClient(notification.Message, notification.Username.ToString());
+            }
+            else if (notification.NotificationType == "Group")
+            {
+                await _notificationHub.SendNotificationToGroup(notification.Message, notification.RoleId);
+            }           
         }
     }
 }
