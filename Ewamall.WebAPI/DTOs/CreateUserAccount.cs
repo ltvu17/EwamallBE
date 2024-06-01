@@ -36,7 +36,6 @@ namespace Ewamall.WebAPI.DTOs
     public class UpdateUserAccount
     {
         public string Password { get; set; }
-        public UserInformation UserInformation { get; set; }
     }
 
 }

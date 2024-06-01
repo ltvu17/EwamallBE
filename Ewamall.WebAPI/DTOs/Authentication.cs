@@ -7,6 +7,7 @@
     }
     public class AuthenticationResponse
     {
+        public int Id { get; set; }
         public string Email { get; set; }
         public RoleDTO Role { get; set; }
         public UserDTO User { get; set; }
