@@ -25,6 +25,16 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpGet("GetUserDetail/{userId}")]
+        public async Task<IActionResult> GetUserDetail(int userId)
+        {
+            var result = await _accountService.GetUserInformationById(userId);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
         [HttpPost("CreateAccout")]
         public async Task<IActionResult> CreateProduct([FromBody] CreateUserAccount request)
         {
@@ -66,10 +76,20 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
-        [HttpPut("UpdateUserAccount/{userId}")]
-        public async Task<IActionResult> UpdateUserAccount(int userId, [FromBody] UpdateUserAccount request)
+        [HttpPut("UpdatePassword/{accountId}")]
+        public async Task<IActionResult> UpdatePassword(int accountId, [FromBody] UpdateUserAccount request)
         {
-            var result = await _accountService.UpdateUserAccount(userId, request);
+            var result = await _accountService.UpdateAccountPassword(accountId, request);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpPut("UpdateUserInformation/{userId}")]
+        public async Task<IActionResult> UpdateUserInformation(int userId, [FromBody] UserInformation request)
+        {
+            var result = await _accountService.UpdateUserInformation(userId, request);
             if (result.IsFailure)
             {
                 return BadRequest(result.Error);
