@@ -4,6 +4,7 @@ using Ewamall.Infrastructure.Dbcontext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ewamall.Infrastructure.Migrations
 {
     [DbContext(typeof(EwamallDBContext))]
-    partial class EwamallDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240601094742_deleteReciverNotification")]
+    partial class deleteReciverNotification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

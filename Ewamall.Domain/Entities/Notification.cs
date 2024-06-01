@@ -17,7 +17,7 @@ namespace Ewamall.Business.Entities
         {  
         }
 
-        internal Notification(string userName, string title, string message, DateTime createdAt, string notificationType, int sender, int receiver, int roleId)
+        internal Notification(string userName, string title, string message, DateTime createdAt, string notificationType, int sender, int roleId)
         {
             Username = userName;
             Title = title;
@@ -25,7 +25,6 @@ namespace Ewamall.Business.Entities
             CreatedAt = createdAt;
             NotificationType = notificationType;
             Sender = sender;
-            Receiver = receiver;
             RoleId = roleId;
         }
         public string Username { get; private set; }
@@ -35,12 +34,11 @@ namespace Ewamall.Business.Entities
         public DateTime CreatedAt { get; private set; }
         public string NotificationType { get; set; } = null!;
         public int Sender { get; private set; }
-        public int Receiver { get; private set; }
         public int RoleId { get; private set; }
 
-        public static Result<Notification> Create(string userName, string title, string message, DateTime createdAt, string notificationType, int sender, int receiver, int roleId)
+        public static Result<Notification> Create(string userName, string title, string message, DateTime createdAt, string notificationType, int sender, int roleId)
         {
-            var notification = new Notification(userName, title, message, createdAt, notificationType, sender, receiver, roleId);
+            var notification = new Notification(userName, title, message, createdAt, notificationType, sender, roleId);
             return notification;
         }
     }

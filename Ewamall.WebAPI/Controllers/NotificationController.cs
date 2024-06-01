@@ -25,10 +25,10 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
-        [HttpGet("GetAllNotificationByUserId/{userId}")]
-        public async Task<IActionResult> GetAllNotificationByUserId(int userId)
+        [HttpGet("GetAllNotificationByUserId/{userName}")]
+        public async Task<IActionResult> GetAllNotificationByUserName(string userName)
         {
-            var result = await _notificationService.GetAllNotificationByUserId(userId);
+            var result = await _notificationService.GetAllNotificationByUserName(userName);
             if (result.IsFailure)
             {
                 return BadRequest(result.Error);

@@ -8,7 +8,6 @@
         public DateTime CreatedAt { get; set; }
         public string NotificationType { get; set; } = null!;
         public int Sender { get; set; }
-        public int Receiver { get; set; }
         public int RoleId { get; set; }
     }
 }
