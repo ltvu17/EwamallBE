@@ -2,7 +2,6 @@
 using Ewamall.Infrastructure.Dbcontext;
 using Ewamall.Business.Entities;
 using Microsoft.Extensions.DependencyInjection;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace Ewamall.DataAccess.Hubs
 {
@@ -50,7 +49,7 @@ namespace Ewamall.DataAccess.Hubs
             return base.OnConnectedAsync();
         }
 
-        public async Task SaveUserConnection(string username)
+        public async Task SaveUserConnection(string username, int roleId)
         {
             using var scope = _serviceProvider.CreateScope();
             _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
@@ -58,7 +57,8 @@ namespace Ewamall.DataAccess.Hubs
             HubConnection hubConnection = new HubConnection
             {
                 ConnectionId = connectionId,
-                Username = username
+                Username = username,
+                RoleId = roleId
             };
 
             _dbContext.HubConnections.Add(hubConnection);
@@ -70,12 +70,11 @@ namespace Ewamall.DataAccess.Hubs
             using var scope = _serviceProvider.CreateScope();
             _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
             var hubConnection = _dbContext.HubConnections.FirstOrDefault(con => con.ConnectionId == Context.ConnectionId);
-            if(hubConnection.Equals(null))
+            if(!hubConnection.Equals(null))
             {
                 _dbContext.HubConnections.Remove(hubConnection);
                 _dbContext.SaveChangesAsync();
             }
-
             return base.OnDisconnectedAsync(exception);
         }
     }

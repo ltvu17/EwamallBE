@@ -39,7 +39,7 @@ namespace Ewamall.DataAccess.SubscribeTableDependencies
                 }
                 else if(notification.NotificationType == "Personal")
                 {
-                    await notificationHub.SendNotificationToClient(notification.Message, notification.Receiver.ToString());
+                    await notificationHub.SendNotificationToClient(notification.Message, notification.Username.ToString());
                 }
                 else if (notification.NotificationType == "Group")
                 {

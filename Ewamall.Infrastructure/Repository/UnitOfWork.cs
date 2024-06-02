@@ -20,5 +20,10 @@ namespace Ewamall.DataAccess.Repository
         {
             return _dbContext.SaveChangesAsync();
         }
+
+        public async Task<int> SaveChangesAsyncResult()
+        {
+            return await _dbContext.SaveChangesAsync();
+        }
     }
 }

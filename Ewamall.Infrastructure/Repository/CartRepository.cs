@@ -35,7 +35,8 @@ namespace Ewamall.DataAccess.Repository
                     CartId = s.Id,
                     CoverImageId = s.SellDetail.Product.CoverImageId,
                     NameProductSellDetail = s.SellDetail.Name,
-                    SellerId = s.SellDetail.Product.SellerId
+                    SellerId = s.SellDetail.Product.SellerId,
+                    ProductSellDetailId = s.SellDetailId
             }).ToListAsync();
         }
     }

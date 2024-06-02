@@ -11,7 +11,9 @@ namespace Ewamall.WebAPI.Services
         public Task<Result<bool>> ConfirmAccount(string email);
         public Task<Result<AuthenticationResponse>> Login(Authentication request);
         public Task<Result<Seller>> RegisterSeller(int userId, CreateSeller request);
-        public Task<Result<Account>> UpdateUserAccount(int  userId, UpdateUserAccount request);
+        public Task<Result<Account>> UpdateAccountPassword(int accountId, UpdateUserAccount request);
         public Task<Result<Seller>> UpdateSellerAccount(int sellerId, CreateSeller request);
+        public Task<Result<User>> UpdateUserInformation(int userId, UserInformation request);
+        public Task<Result<User>> GetUserInformationById(int userId);
     }
 }

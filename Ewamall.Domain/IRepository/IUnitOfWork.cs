@@ -9,5 +9,6 @@ namespace Ewamall.Business.IRepository
     public interface IUnitOfWork
     {
         public Task SaveChangesAsync();
+        public Task<int> SaveChangesAsyncResult();
     }
 }

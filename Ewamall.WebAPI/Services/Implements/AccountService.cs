@@ -7,6 +7,7 @@ using Ewamall.Domain.IRepository;
 using Ewamall.Domain.Shared;
 using Ewamall.Infrastructure.Repository;
 using Ewamall.WebAPI.DTOs;
+using System.Security.Principal;
 
 namespace Ewamall.WebAPI.Services.Implements
 {
@@ -148,14 +149,15 @@ namespace Ewamall.WebAPI.Services.Implements
             return seller;
         }
 
-        public async Task<Result<Account>> UpdateUserAccount(int accountId, UpdateUserAccount request)
+        public async Task<Result<Account>> UpdateAccountPassword(int accountId, UpdateUserAccount request)
         {
             var account = await _accountRepo.GetByIdAsync(accountId);
             if(account is null)
             {
-                return Result.Failure<Account>(new Error("Update User", "Can not find user"));
+                return Result.Failure<Account>(new Error("Update Password", "Can not find account"));
             }
             var updateUserAccount = _mapper.Map(request, account);
+            updateUserAccount.Updated = DateTime.UtcNow;
 
             await _accountRepo.UpdateAsync(updateUserAccount);
             await _unitOfWork.SaveChangesAsync();
@@ -173,6 +175,29 @@ namespace Ewamall.WebAPI.Services.Implements
             await _sellerRepo.UpdateAsync(updateSeller);
             await _unitOfWork.SaveChangesAsync();
             return updateSeller;
+        }
+
+        public async Task<Result<User>> UpdateUserInformation(int userId, UserInformation request)
+        { 
+            var user = await _userRepo.GetByIdAsync(userId);
+            if (user is null)
+            {
+                return Result.Failure<User>(new Error("Update User", "Can not find user"));
+            }
+            var updateUser = _mapper.Map(request, user);
+            await _userRepo.UpdateAsync(updateUser);
+            await _unitOfWork.SaveChangesAsync();
+            return updateUser;
+        }
+
+        public async Task<Result<User>> GetUserInformationById(int userId)
+        {
+            var user = await _userRepo.GetByIdAsync(userId);
+            if (user is null)
+            {
+                return Result.Failure<User>(new Error("Get User Infor", "Can not find user"));
+            }
+            return user;
         }
     }
 }

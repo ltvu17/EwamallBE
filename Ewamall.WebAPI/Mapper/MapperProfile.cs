@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Ewamall.Business.Entities;
 using Ewamall.Business.IRepository;
 using Ewamall.Domain.Entities;
 using Ewamall.WebAPI.DTOs;
@@ -16,6 +17,9 @@ namespace Ewamall.WebAPI.Mapper
             CreateMap<UpdateUserAccount, Account>();
             CreateMap<CreateSeller, Seller>();
             CreateMap<User, UserDTO>();
+            CreateMap<CreateNotification, Notification>();
+            CreateMap<UserInformation, User>();
+
 
             CreateMap<CreateProductCommand, Product>();
             CreateMap<ProductDetailCommand, ProductDetail>();

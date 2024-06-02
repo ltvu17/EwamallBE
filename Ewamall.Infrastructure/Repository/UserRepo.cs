@@ -21,7 +21,12 @@ namespace Ewamall.DataAccess.Repository
 
         public override async Task<User> GetByIdAsync(int id)
         {
-            return await _context.Users.Where(s => s.Id == id).FirstOrDefaultAsync();
+            return await _context.Users.Where(s => s.Id == id).Include(s => s.Account).FirstOrDefaultAsync();
+        }
+
+        public bool IsUserExist(int userId)
+        {
+            return _context.Users.Any(s => s.Id == userId);
         }
     }
 }
