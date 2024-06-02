@@ -35,15 +35,15 @@ namespace Ewamall.DataAccess.SubscribeTableDependencies
                 var notification = e.Entity;
                 if(notification.NotificationType == "All")
                 {
-                    await notificationHub.SendNotificationToAll(notification.Message);
+                    await notificationHub.SendNotificationToAll(notification.Title,notification.Message);
                 }
                 else if(notification.NotificationType == "Personal")
                 {
-                    await notificationHub.SendNotificationToClient(notification.Message, notification.Username.ToString());
+                    await notificationHub.SendNotificationToClient(notification.Title, notification.Message, notification.Username.ToString());
                 }
                 else if (notification.NotificationType == "Group")
                 {
-                    await notificationHub.SendNotificationToGroup(notification.Message, notification.RoleId);
+                    await notificationHub.SendNotificationToGroup(notification.Title, notification.Message, notification.RoleId);
                 }
             }
         }
