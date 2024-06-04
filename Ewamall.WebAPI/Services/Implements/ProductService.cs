@@ -134,6 +134,10 @@ namespace Ewamall.WebAPI.Services.Implements
                 return Result.Failure<IEnumerable<Product>>(new Error("GetProductBySellerId.GetByIdAsync()", "Seller not found"));
             }
             var product = (await _productRepo.FindAsync(x => x.SellerId == sellerId, int.MaxValue, 1)).ToList();
+            foreach (var item in product)
+            {
+                item.Seller = null;
+            }
             if(product.Count == 0)
             {
                     return Result.Failure<IEnumerable<Product>>(new Error("GetProductBySellerId.FindAsync()", "Product not found"));      

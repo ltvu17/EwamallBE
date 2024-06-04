@@ -40,7 +40,7 @@ namespace Ewamall.Domain.Entities
         public IEnumerable<ProductSellDetail> ProductSellerDetails => _productSellerDetails;
         [ForeignKey("Seller")]
         public int SellerId { get; private set; }
-        public Seller Seller { get; private set; }
+        public Seller Seller { get; set; }
         public int ProductStatus { get; private set; } = 1;
 
         public static Result<Product> Create(string productName, string productDescription, Guid coverImageId, Guid imagesId, Guid videoId, int industryId, int sellerId)
