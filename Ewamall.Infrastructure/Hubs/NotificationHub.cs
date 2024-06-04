@@ -15,22 +15,22 @@ namespace Ewamall.DataAccess.Hubs
             _serviceProvider = serviceProvider;
         }
 
-        public async Task SendNotificationToAll(string message)
+        public async Task SendNotificationToAll(string title, string message)
         {
-            await Clients.All.SendAsync("ReceivedNotification", message);
+            await Clients.All.SendAsync("ReceivedNotification",title, message);
         }
 
-        public async Task SendNotificationToClient(string message, string username)
+        public async Task SendNotificationToClient(string title, string message, string username)
         {
             using var scope = _serviceProvider.CreateScope();
             _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
             var hubConnections = _dbContext.HubConnections.Where(con => con.Username == username).ToList();
             foreach (var hubConnection in hubConnections)
             {
-                await Clients.Client(hubConnection.ConnectionId).SendAsync("ReceivedPersonalNotification", message, username);
+                await Clients.Client(hubConnection.ConnectionId).SendAsync("ReceivedPersonalNotification", title, message, username);
             }
         }
-        public async Task SendNotificationToGroup(string message, int group)
+        public async Task SendNotificationToGroup(string title, string message, int group)
         {
             using var scope = _serviceProvider.CreateScope();
             _dbContext = scope.ServiceProvider.GetRequiredService<EwamallDBContext>();
@@ -38,7 +38,7 @@ namespace Ewamall.DataAccess.Hubs
             foreach (var hubConnection in hubConnections)
             {
                 string username = hubConnection.Username;
-                await Clients.Client(hubConnection.ConnectionId).SendAsync("ReceivedPersonalNotification", message, username);
+                await Clients.Client(hubConnection.ConnectionId).SendAsync("ReceivedPersonalNotification", title, message, username);
                 //Call Send Email function here
             }
         }

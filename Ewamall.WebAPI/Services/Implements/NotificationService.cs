@@ -104,15 +104,15 @@ namespace Ewamall.WebAPI.Services.Implements
         {       
             if (notification.NotificationType == "All")
             {
-                await _notificationHub.SendNotificationToAll(notification.Message);
+                await _notificationHub.SendNotificationToAll(notification.Title, notification.Message);
             }
             else if (notification.NotificationType == "Personal")
             {
-                await _notificationHub.SendNotificationToClient(notification.Message, notification.Username.ToString());
+                await _notificationHub.SendNotificationToClient(notification.Title, notification.Message, notification.Username.ToString());
             }
             else if (notification.NotificationType == "Group")
             {
-                await _notificationHub.SendNotificationToGroup(notification.Message, notification.RoleId);
+                await _notificationHub.SendNotificationToGroup(notification.Title, notification.Message, notification.RoleId);
             }           
         }
     }
