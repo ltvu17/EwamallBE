@@ -4,31 +4,41 @@ using Ewamall.Domain.Entities;
 using Ewamall.Domain.Shared;
 using Ewamall.WebAPI.DTOs;
 using Microsoft.AspNetCore.Http;
+using System.Security.Principal;
 
 namespace Ewamall.WebAPI.Services.Implements
 {
     public class UserService : IUserService
     {
         private readonly ICartRepository _cartRepository;
+        private readonly IUserRepo _userRepo;
         private readonly IBaseSetupService<OrderStatus> _orderStatusService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IShipAddressRepo _shipAddressRepo;
         private readonly IOrderRepo _orderRepo;
         private readonly IMapper _mapper;
+        private readonly IEmailSender _emailSender;
+        private readonly INotificationService _notificationService;
 
         public UserService(ICartRepository cartRepository,
+            IUserRepo userRepo,
             IBaseSetupService<OrderStatus> orderStatusService,
             IUnitOfWork unitOfWork,
             IShipAddressRepo shipAddressRepo,
             IOrderRepo orderRepo,
-            IMapper mapper)
+            IMapper mapper,
+            IEmailSender emailSender,
+            INotificationService notificationService)
         {
             _cartRepository = cartRepository;
+            _userRepo = userRepo;
             _orderStatusService = orderStatusService;
             _unitOfWork = unitOfWork;
             _shipAddressRepo = shipAddressRepo;
             _orderRepo = orderRepo;
             _mapper = mapper;
+            _emailSender = emailSender;
+            _notificationService = notificationService;
         }
         public async Task<Result<Cart>> AddToCart(CreateCartCommand request)
         {
@@ -169,6 +179,35 @@ namespace Ewamall.WebAPI.Services.Implements
             }
             await _orderRepo.AddAsync(order);
             await _unitOfWork.SaveChangesAsync();
+            // Mail
+            // Tạo message HTML
+            var user = await _userRepo.GetByIdAsync(userId);
+            string htmlMessage = $@"
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Thông tin mua hàng</title>
+                </head>
+                <body>
+                    <h2>Xin chào, {user.Name}!</h2>
+                    <p>EWaMall xin cám ơn vì bạn đã tin tưởng và mua sản phẩm của chúng tôi</p>
+                    <p>Chi tiết đơn hàng của bạn bao gồm: Haha hihi hehe </p>
+                    <p>Mong mọi người tiếp tục ủng hộ và nếu có vấn đề gì có thể phản hồi email này!</p>
+                    <p> Xin cám ơn </>
+                </body>
+                </html>
+                ";
+            await _emailSender.SendEmailAsync(user.Account.Email, "Xác thực đăng kí tài khoản EWaMall", htmlMessage);
+            await _notificationService.CreateNotification(user.Name, new CreateNotification()
+            {
+                Title = "Bạn đã mua hàng thành công",
+                Message = "Cám ơn bạn đã mua sản phẩm của chúng tôi",
+                CreatedAt = DateTime.Now,
+                NotificationType = "Personal",
+                Sender = 1,
+                RoleId  = 4
+
+            });
             return result;
         }
 
