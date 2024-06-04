@@ -55,9 +55,9 @@ namespace Ewamall.Domain.Entities
             _shipAddress.Add(shipAddress);
             return this;
         } 
-        public Result<User> AddSeller(string shopName, string address, string phoneNumber, string email, string description)
+        public Result<User> AddSeller(string shopName, string address, int provinceId, int districtId, int wardId, string phoneNumber, string email, string description)
         {
-            var result = Seller.Create(shopName, address, phoneNumber, email, description, this);
+            var result = Seller.Create(shopName, address, provinceId, districtId, wardId, phoneNumber, email, description, this);
             if (result.IsFailure)
             {
                 return Result.Failure<User>(result.Error);

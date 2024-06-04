@@ -125,6 +125,9 @@ namespace Ewamall.WebAPI.Services.Implements
             var sellerResult = Seller.Create(
                 request.ShopName,
                 request.Address,
+                request.ProvinceId,
+                request.DistrictId,
+                request.WardId,
                 request.PhoneNumber,
                 request.Email,
                 request.Description,
@@ -198,6 +201,16 @@ namespace Ewamall.WebAPI.Services.Implements
                 return Result.Failure<User>(new Error("Get User Infor", "Can not find user"));
             }
             return user;
+        }
+
+        public async Task<Result<Seller>> GetSellerById(int sellerId)
+        {
+            var seller = await _sellerRepo.GetByIdAsync(sellerId);
+            if (seller is null)
+            {
+                return Result.Failure<Seller>(new Error("Get Seller Infor", "Can not find seller"));
+            }
+            return seller;
         }
     }
 }
