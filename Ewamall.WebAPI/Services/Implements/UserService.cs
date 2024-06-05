@@ -198,15 +198,15 @@ namespace Ewamall.WebAPI.Services.Implements
                 </html>
                 ";
             await _emailSender.SendEmailAsync(user.Account.Email, "Xác thực đăng kí tài khoản EWaMall", htmlMessage);
-            await _notificationService.CreateNotification(user.Name, new CreateNotification()
+            await _notificationService.CreateNotification(new CreateNotification()
             {
+                Username = user.Name,
                 Title = "Bạn đã mua hàng thành công",
                 Message = "Cám ơn bạn đã mua sản phẩm của chúng tôi",
                 CreatedAt = DateTime.Now,
                 NotificationType = "Personal",
                 Sender = 1,
                 RoleId  = 4
-
             });
             return result;
         }
