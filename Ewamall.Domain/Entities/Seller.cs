@@ -16,10 +16,13 @@ namespace Ewamall.Domain.Entities
         {
             
         }
-        public Seller(string shopName, string address, string phoneNumber, string email, string description, User user)
+        public Seller(string shopName, string address, int provinceId, int districtId, int wardId, string phoneNumber, string email, string description, User user)
         {
             ShopName = shopName;
             Address = address;
+            ProvinceId = provinceId;
+            DistrictId = districtId;
+            WardId = wardId;
             PhoneNumber = phoneNumber;
             Email = email;
             Description = description;
@@ -28,6 +31,9 @@ namespace Ewamall.Domain.Entities
 
         public string ShopName { get; set; }
         public string Address { get; set; }
+        public int ProvinceId { get; set; }
+        public int DistrictId { get; set; }
+        public int WardId { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Description { get; set; }
@@ -38,9 +44,9 @@ namespace Ewamall.Domain.Entities
         [JsonIgnore]
         public virtual IEnumerable<Product> Products { get; set; }
 
-        public static Result<Seller> Create(string shopName, string address, string phoneNumber, string email, string description, User user)
+        public static Result<Seller> Create(string shopName, string address, int provinceId, int districtId, int wardId, string phoneNumber, string email, string description, User user)
         {
-            var seller = new Seller(shopName, address, phoneNumber, email, description, user);
+            var seller = new Seller(shopName, address,provinceId, districtId, wardId, phoneNumber, email, description, user);
             return seller;
         }
         public Result<Seller> AddWallet(float balance)

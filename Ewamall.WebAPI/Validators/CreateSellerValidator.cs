@@ -10,6 +10,9 @@ namespace Ewamall.WebAPI.Validators
         public CreateSellerValidator(ISellerRepo sellerRepo) {
             RuleFor(s => s.ShopName).NotNull().NotEmpty();
             RuleFor(s => s.Address).NotNull().NotEmpty();
+            RuleFor(s => s.ProvinceId).NotNull().NotEmpty();
+            RuleFor(s => s.DistrictId).NotNull().NotEmpty();
+            RuleFor(s => s.WardId).NotNull().NotEmpty();
             RuleFor(s => s.Description).NotNull().NotEmpty();
             RuleFor(s => s.Email)
                 .NotNull().WithMessage("Email is required.")

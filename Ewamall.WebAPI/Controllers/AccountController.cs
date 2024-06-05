@@ -97,9 +97,19 @@ namespace Ewamall.WebAPI.Controllers
             return Ok(result.Value);
         }
         [HttpPut("UpdateSeller/{sellerId}")]
-        public async Task<IActionResult> UpdateSeller(int sellerId, [FromBody] CreateSeller request)
+        public async Task<IActionResult> UpdateSellerById(int sellerId, [FromBody] CreateSeller request)
         {
             var result = await _accountService.UpdateSellerAccount(sellerId, request);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpGet("GetSellerById/{sellerId}")]
+        public async Task<IActionResult> GetSellerById(int sellerId)
+        {
+            var result = await _accountService.GetSellerById(sellerId);
             if (result.IsFailure)
             {
                 return BadRequest(result.Error);

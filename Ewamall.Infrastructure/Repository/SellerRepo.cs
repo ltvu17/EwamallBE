@@ -2,6 +2,7 @@
 using Ewamall.Domain.Entities;
 using Ewamall.Infrastructure.Dbcontext;
 using Ewamall.Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,10 @@ namespace Ewamall.DataAccess.Repository
         {
             _context = context;
         }
-
+        public override async Task<Seller> GetByIdAsync(int id)
+        {
+            return await _context.Sellers.Where(s => s.Id == id).Include(s => s.Wallet).FirstOrDefaultAsync();
+        }
         public bool IsEmailExist(string email)
         {
             return _context.Sellers.Any(s => s.Email == email);

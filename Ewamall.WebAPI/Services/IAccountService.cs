@@ -15,5 +15,6 @@ namespace Ewamall.WebAPI.Services
         public Task<Result<Seller>> UpdateSellerAccount(int sellerId, CreateSeller request);
         public Task<Result<User>> UpdateUserInformation(int userId, UserInformation request);
         public Task<Result<User>> GetUserInformationById(int userId);
+        public Task<Result<Seller>> GetSellerById(int sellerId);
     }
 }
