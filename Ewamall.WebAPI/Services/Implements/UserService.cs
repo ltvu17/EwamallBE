@@ -198,7 +198,7 @@ namespace Ewamall.WebAPI.Services.Implements
                 </html>
                 ";
             await _emailSender.SendEmailAsync(user.Account.Email, "Xác thực đăng kí tài khoản EWaMall", htmlMessage);
-            await _notificationService.CreateNotification(user.Name, new CreateNotification()
+            await _notificationService.CreateNotification(new CreateNotification()
             {
                 Title = "Bạn đã mua hàng thành công",
                 Message = "Cám ơn bạn đã mua sản phẩm của chúng tôi",
