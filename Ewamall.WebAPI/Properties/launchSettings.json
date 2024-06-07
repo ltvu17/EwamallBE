@@ -6,7 +6,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ConnectionStrings": "Data Source='116.109.26.89, 1433';Initial Catalog=EwamallTestDb;User ID=sa;Password=vu27062002;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"
+        "ConnectionStrings": "Data Source='116.109.66.6,1433';Initial Catalog=EwamallTestDb;User ID=sa;Password=vu27062002;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7289;http://localhost:5251"
@@ -16,8 +16,8 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        //"ConnectionStrings": "Data Source='116.109.26.89, 1433';Initial Catalog=EwamallTestDb;User ID=sa;Password=vu27062002;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+        //"ConnectionStrings": "Data Source='116.109.66.6,1433';Initial Catalog=EwamallTestDb;User ID=sa;Password=vu27062002;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False",
       }
     },
     "Docker": {
@@ -25,8 +25,8 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "ASPNETCORE_URLS": "https://+:443;http://+:80",
-        //"ConnectionStrings": "Data Source='116.109.26.89, 1433';Initial Catalog=EwamallTestDb;User ID=sa;Password=vu27062002;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False",
+        "ASPNETCORE_URLS": "https://+:443;http://+:80"
+        //"ConnectionStrings": "Data Source='116.109.66.6,1433';Initial Catalog=EwamallTestDb;User ID=sa;Password=vu27062002;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False",
       },
       "publishAllPorts": true,
       "useSSL": true
