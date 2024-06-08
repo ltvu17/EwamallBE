@@ -21,11 +21,11 @@ namespace Ewamall.DataAccess.Repository
 
         public async Task<IEnumerable<Order>> GetOrderByUserId(int userId)
         {
-            return await _context.Orders.Where(s =>s.UserId == userId).Include(s=>s.OrderDetails).ThenInclude(s=>s.ProductSellDetail).ThenInclude(s=>s.Product).Include(s=>s.Status).ToListAsync();
+            return await _context.Orders.Where(s =>s.UserId == userId).Include(s=>s.OrderDetails).ThenInclude(s=>s.ProductSellDetail).ThenInclude(s=>s.Product).Include(s=>s.Status).AsNoTracking().ToListAsync();
         }
         public async Task<IEnumerable<Order>> GetOrderBySellerId(int sellerId)
         {
-            return await _context.Orders.Where(s => s.OrderDetails.FirstOrDefault().ProductSellDetail.Product.Seller.Id == sellerId).Include(s => s.Status).Include(s => s.OrderDetails).ThenInclude(s => s.ProductSellDetail).ThenInclude(s => s.Product).ToListAsync();
+            return await _context.Orders.Where(s => s.OrderDetails.FirstOrDefault().ProductSellDetail.Product.Seller.Id == sellerId).Include(s => s.Status).Include(s => s.OrderDetails).ThenInclude(s => s.ProductSellDetail).ThenInclude(s => s.Product).AsNoTracking().ToListAsync();
         }
     }
 }
