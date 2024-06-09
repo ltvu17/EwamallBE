@@ -83,6 +83,16 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpPut("UpdateProductStatus/{id}")]
+        public async Task<IActionResult> UpdateProductStatus(int id, int status)
+        {
+            var result = await _productService.UpdateProductStatus(id, status);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
         [HttpDelete("DeleteProduct/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {

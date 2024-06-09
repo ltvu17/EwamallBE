@@ -29,6 +29,26 @@ namespace Ewamall.Infrastructure.Repository
                 Id = s.Id,
             }).AsNoTracking().ToListAsync();
         }
+        public async Task<IEnumerable<ProductDTO>> GetAllDTOBySellerIdAsync(int sellerId)
+        {
+            return await _context.Products.Where(s=>s.SellerId==sellerId).Include(s => s.Seller).IgnoreAutoIncludes().Include(s => s.ProductSellDetails).Include(s => s.Industry).Select(s => new ProductDTO
+            {
+                ProductName = s.ProductName,
+                CoverImageId = s.CoverImageId,
+                ImagesId = s.ImagesId,
+                Industry = s.Industry,
+                IndustryId = s.IndustryId,
+                ProductDescription = s.ProductDescription,
+                SellerId = s.SellerId,
+                SellerName = s.Seller.ShopName,
+                VideoId = s.VideoId
+                ,
+                MinPrice = s.ProductSellerDetails.Where(s => s.Price > 0 && s.Price != null).OrderBy(s => s.Price).FirstOrDefault().Price,
+                SellerAddress = s.Seller.Address,
+                Id = s.Id,
+                TotalQuantity = s.ProductSellerDetails.Sum(s=>s.InventoryNumber),
+            }).AsNoTracking().ToListAsync();
+        }
 
         public async Task<IEnumerable<ProductDTO>> GetAllDTOByIndustryIdAsync(int industryId)
         {
