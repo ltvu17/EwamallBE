@@ -30,5 +30,6 @@ namespace Ewamall.Domain.IRepository
         public float? MinPrice { get;  set; }
         public string SellerAddress { get; set; }
         public int? TotalQuantity { get; set; }
+        public int ProductStatus { get; set; }
     }
 }

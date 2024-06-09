@@ -43,6 +43,7 @@ namespace Ewamall.Infrastructure.Repository
                 SellerName = s.Seller.ShopName,
                 VideoId = s.VideoId
                 ,
+                ProductStatus = s.ProductStatus,
                 MinPrice = s.ProductSellerDetails.Where(s => s.Price > 0 && s.Price != null).OrderBy(s => s.Price).FirstOrDefault().Price,
                 SellerAddress = s.Seller.Address,
                 Id = s.Id,
