@@ -208,6 +208,16 @@ namespace Ewamall.WebAPI.Services.Implements
                 Sender = 1,
                 RoleId  = 4
             });
+            await _notificationService.CreateNotification(new CreateNotification()
+            {
+                Username = "Lê Văn Minh Nhật",
+                Title = "Đơn hàng mới",
+                Message = "Bạn có đơn hàng mới từ: "+ user.Name,
+                CreatedAt = DateTime.Now,
+                NotificationType = "Personal",
+                Sender = 1,
+                RoleId = 3
+            });
             return result;
         }
 
