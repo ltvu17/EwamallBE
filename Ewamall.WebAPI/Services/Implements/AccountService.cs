@@ -74,7 +74,7 @@ namespace Ewamall.WebAPI.Services.Implements
         <body>
             <h2>Xin chào, {account.User.Name}!</h2>
             <p>Bạn đã tạo tài khoản thành công cho dịch vụ EWaMall của chúng tôi.</p>
-            <p>Vui lòng nhấn vào <a href='https://localhost:7289/api/Account/ConfirmAccount/{account.Email}'>liên kết này</a> để xác thực tài khoản.</p>
+            <p>Vui lòng nhấn vào <a href='https://ewamallbe.onrender.com/api/Account/ConfirmAccount/{account.Email}'>liên kết này</a> để xác thực tài khoản.</p>
         </body>
         </html>
     ";
