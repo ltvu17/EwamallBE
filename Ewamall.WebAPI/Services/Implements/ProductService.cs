@@ -126,21 +126,17 @@ namespace Ewamall.WebAPI.Services.Implements
             return product;
         }
 
-        public async Task<Result<IEnumerable<Product>>> GetProductBySellerId(int sellerId)
+        public async Task<Result<IEnumerable<ProductDTO>>> GetProductBySellerId(int sellerId)
         {
             var seller = (await _sellerRepo.GetByIdAsync(sellerId));
             if (seller is null)
             {
-                return Result.Failure<IEnumerable<Product>>(new Error("GetProductBySellerId.GetByIdAsync()", "Seller not found"));
+                return Result.Failure<IEnumerable<ProductDTO>>(new Error("GetProductBySellerId.GetByIdAsync()", "Seller not found"));
             }
-            var product = (await _productRepo.FindAsync(x => x.SellerId == sellerId, int.MaxValue, 1)).ToList();
-            foreach (var item in product)
-            {
-                item.Seller = null;
-            }
+            var product = (await _productRepo.GetAllDTOBySellerIdAsync(sellerId)).ToList();
             if(product.Count == 0)
             {
-                    return Result.Failure<IEnumerable<Product>>(new Error("GetProductBySellerId.FindAsync()", "Product not found"));      
+                    return Result.Failure<IEnumerable<ProductDTO>>(new Error("GetProductBySellerId.FindAsync()", "Product not found"));      
             }
             return product;
         }
@@ -200,6 +196,23 @@ namespace Ewamall.WebAPI.Services.Implements
                 return Result.Failure<IEnumerable<ProductDTO>>(new Error("GetAllProductBySearch.FindProduct()", "Product not found"));
             }
             return products;
+        }
+
+        public async Task<Result<Product>> UpdateProductStatus(int id, int status)
+        {
+            var product = await _productRepo.GetByIdAsync(id);
+            if (product is null)
+            {
+                return Result.Failure<Product>(new Error("UpdateProduct.GetById", "Product not found"));
+            }
+            var result = product.ChangeStatusProduct(status);
+            if (result.IsFailure)
+            {
+                return Result.Failure<Product>(new Error("UpdateProduct.ChangeStatusProduct", "Product not found"));
+            }
+            await _productRepo.UpdateAsync(result.Value);
+            await _unitOfWork.SaveChangesAsync();
+            return result;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Ewamall.Domain.IRepository
     {
         public Task<IEnumerable<ProductDTO>> GetAllDTOAsync();
         public Task<IEnumerable<ProductDTO>> GetAllDTOByIndustryIdAsync(int industryId);
+        public Task<IEnumerable<ProductDTO>> GetAllDTOBySellerIdAsync(int sellerId);
     }
     public class ProductDTO
     {
@@ -28,5 +29,7 @@ namespace Ewamall.Domain.IRepository
         public string SellerName { get;  set; }
         public float? MinPrice { get;  set; }
         public string SellerAddress { get; set; }
+        public int? TotalQuantity { get; set; }
+        public int ProductStatus { get; set; }
     }
 }

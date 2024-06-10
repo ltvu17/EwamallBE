@@ -58,6 +58,11 @@ namespace Ewamall.Domain.Entities
             _productSellerDetails.AddRange(items);
             return this;
         }
+        public Result<Product> ChangeStatusProduct(int status)
+        {
+            ProductStatus = status;
+            return this;
+        }
     }
 }
  
