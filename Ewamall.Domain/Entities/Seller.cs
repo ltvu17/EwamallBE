@@ -35,6 +35,7 @@ namespace Ewamall.Domain.Entities
         public int DistrictId { get; set; }
         public int WardId { get; set; }
         public string PhoneNumber { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
         public string Email { get; set; }
         public string Description { get; set; }
         public Wallet? Wallet { get; set; }

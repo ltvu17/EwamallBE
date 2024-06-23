@@ -36,6 +36,7 @@ namespace Ewamall.Domain.Entities
         public int AccountId { get; set; }
         public Account Account { get; set; }
         public Seller? Seller { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
         public IEnumerable<Order> Orders { get; set; }
         public IEnumerable<ShipAddress> ShipAddresses => _shipAddress;
         public IEnumerable<FeedBack> FeedBacks { get; set; }
