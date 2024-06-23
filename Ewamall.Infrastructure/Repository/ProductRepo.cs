@@ -27,6 +27,8 @@ namespace Ewamall.Infrastructure.Repository
                 ,MinPrice =s.ProductSellerDetails.Where(s=>s.Price > 0 && s.Price != null).OrderBy(s=>s.Price).FirstOrDefault().Price,
                 SellerAddress = s.Seller.Address,
                 Id = s.Id,
+                ProductStatus= s.ProductStatus,
+                TotalQuantity = s.ProductSellerDetails.Sum(s=>s.InventoryNumber)
             }).AsNoTracking().ToListAsync();
         }
         public async Task<IEnumerable<ProductDTO>> GetAllDTOBySellerIdAsync(int sellerId)
