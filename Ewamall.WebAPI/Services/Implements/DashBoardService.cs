@@ -1,5 +1,7 @@
 ﻿using Ewamall.Business.Entities;
 using Ewamall.Business.IRepository;
+using Ewamall.DataAccess.Repository;
+using Ewamall.Domain.Entities;
 using Ewamall.Domain.Shared;
 using Ewamall.WebAPI.DTOs;
 
@@ -133,6 +135,36 @@ namespace Ewamall.WebAPI.Services.Implements
                 Total = getAll,
                 ThisMonth = getThisMonth,
             });
+        }
+
+        public async Task<Result<IEnumerable<User>>> GetListCustomers()
+        {
+            Result<IEnumerable<User>> result = (await _userRepo.GetAllAsync()).ToList();
+            if (result.IsFailure)
+            {
+                return Result.Failure<IEnumerable<User>>(new Error("IEnumerable<User>.GetAll()", "Fail to load account"));
+            }
+            return result;
+        }
+
+        public async Task<Result<IEnumerable<Order>>> GetListOrders()
+        {
+            Result<IEnumerable<Order>> result = (await _orderRepo.GetAllAsync()).ToList();
+            if (result.IsFailure)
+            {
+                return Result.Failure<IEnumerable<Order>>(new Error("IEnumerable<Order>.GetAll()", "Fail to load account"));
+            }
+            return result;
+        }
+
+        public async Task<Result<IEnumerable<Seller>>> GetListSellers()
+        {
+            Result<IEnumerable<Seller>> result = (await _sellerRepo.GetAllAsync()).ToList();
+            if (result.IsFailure)
+            {
+                return Result.Failure<IEnumerable<Seller>>(new Error("IEnumerable<Seller>.GetAll()", "Fail to load account"));
+            }
+            return result;
         }
 
         public async Task<Result<DashBoardCustomerResponse>> GetTotalDownload()

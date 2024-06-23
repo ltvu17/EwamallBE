@@ -1,6 +1,7 @@
 ﻿using Ewamall.Domain.Shared;
 using Ewamall.WebAPI.DTOs;
 using Ewamall.WebAPI.Services;
+using Ewamall.WebAPI.Services.Implements;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ewamall.WebAPI.Controllers
@@ -73,6 +74,36 @@ namespace Ewamall.WebAPI.Controllers
                 return BadRequest(Result.Failure<DashBoardRevenueResponse>(new Error("NewDownload()", "Insert new downloader")));
             }
             return Ok(response.Value);
+        }
+        [HttpGet("GetListSellers")]
+        public async Task<IActionResult> GetAllAccounts()
+        {
+            var result = await _dashBoardService.GetListSellers();
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpGet("GetListCustomers")]
+        public async Task<IActionResult> GetListCustomers()
+        {
+            var result = await _dashBoardService.GetListCustomers();
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpGet("GetListOrders")]
+        public async Task<IActionResult> GetListOrders()
+        {
+            var result = await _dashBoardService.GetListOrders();
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
         }
     }
 }
