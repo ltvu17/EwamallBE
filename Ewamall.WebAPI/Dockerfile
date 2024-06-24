@@ -20,5 +20,6 @@ RUN dotnet publish "Ewamall.WebAPI.csproj" -c Release -o /app/publish /p:UseAppH
 FROM base AS final
 WORKDIR /app
 COPY ["Ewamall.WebAPI/File/Ewamall.apk", "app/"]
+COPY ["Ewamall.WebAPI/File/Ewamall.apk", "./"]
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Ewamall.WebAPI.dll"]
