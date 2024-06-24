@@ -108,7 +108,7 @@ namespace Ewamall.WebAPI.Controllers
         [HttpGet("Download")]
         public async Task<IActionResult> GetFileById()
         {
-            string path = ".\\Ewamall.apk";
+            string path = "..\\..\\src\\Ewamall.apk";
             if (System.IO.File.Exists(path))
             {
                 return File(System.IO.File.OpenRead(path), "application/octet-stream", Path.GetFileName(path));
