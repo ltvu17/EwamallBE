@@ -105,5 +105,17 @@ namespace Ewamall.WebAPI.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpGet("Download")]
+        public async Task<IActionResult> GetFileById()
+        {
+            
+            string directory = Directory.GetCurrentDirectory();
+            string path = directory+"\\File\\Ewamall.apk";
+            if (System.IO.File.Exists(path))
+            {
+                return File(System.IO.File.OpenRead(path), "application/octet-stream", Path.GetFileName(path));
+            }
+            return NotFound();
+        }
     }
 }
