@@ -109,11 +109,12 @@ namespace Ewamall.WebAPI.Controllers
         public async Task<IActionResult> GetFileById()
         {
             string path = ".\\Ewamall.apk";
-            var dir = Directory.GetFiles("Ewamall.apk");
+     
             if (System.IO.File.Exists(path))
             {
                 return File(System.IO.File.OpenRead(path), "application/octet-stream", Path.GetFileName(path));
             }
+            var dir = Directory.GetFiles("");
             return Ok(dir);
         }
     }
