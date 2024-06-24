@@ -27,5 +27,10 @@ namespace Ewamall.DataAccess.Repository
         {
             return await _context.Orders.Where(s => s.OrderDetails.FirstOrDefault().ProductSellDetail.Product.Seller.Id == sellerId).Include(s => s.Status).Include(s => s.OrderDetails).ThenInclude(s => s.ProductSellDetail).ThenInclude(s => s.Product).ThenInclude(s=>s.Seller).AsNoTracking().ToListAsync();
         }
+
+        public override async Task<IEnumerable<Order>> GetAllAsync()
+        {
+            return await _context.Orders.Include(s => s.Status).AsNoTracking().ToListAsync();
+        }
     }
 }
