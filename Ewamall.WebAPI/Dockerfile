@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Ewamall.WebAPI/File/Ewamall.apk", "Ewamall.WebAPI/File"]
+COPY ["Ewamall.WebAPI/File/Ewamall.apk", "Ewamall.WebAPI/"]
 COPY ["Ewamall.WebAPI/Ewamall.WebAPI.csproj", "Ewamall.WebAPI/"]
 RUN dotnet restore "Ewamall.WebAPI/Ewamall.WebAPI.csproj"
 COPY . .

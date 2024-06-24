@@ -110,7 +110,7 @@ namespace Ewamall.WebAPI.Controllers
         {
             
             string directory = Directory.GetCurrentDirectory();
-            string path = ".\\File\\Ewamall.apk";
+            string path = ".\\src\\Ewamall.apk";
             if (System.IO.File.Exists(path))
             {
                 return File(System.IO.File.OpenRead(path), "application/octet-stream", Path.GetFileName(path));
