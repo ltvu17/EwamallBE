@@ -108,7 +108,7 @@ namespace Ewamall.WebAPI.Controllers
         [HttpGet("Download")]
         public async Task<IActionResult> GetFileById()
         {
-            string path = "..\\Ewamall.apk";
+            string path = ".\\Ewamall.apk";
             string dir = Directory.GetCurrentDirectory();
             if (System.IO.File.Exists(path))
             {
