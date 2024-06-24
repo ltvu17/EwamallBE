@@ -7,7 +7,6 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Ewamall.WebAPI/File/Ewamall.apk", "Ewamall.WebAPI/"]
 COPY ["Ewamall.WebAPI/Ewamall.WebAPI.csproj", "Ewamall.WebAPI/"]
 RUN dotnet restore "Ewamall.WebAPI/Ewamall.WebAPI.csproj"
 COPY . .
@@ -19,5 +18,6 @@ RUN dotnet publish "Ewamall.WebAPI.csproj" -c Release -o /app/publish /p:UseAppH
 
 FROM base AS final
 WORKDIR /app
+COPY ["Ewamall.WebAPI/File/Ewamall.apk", "publish/"]
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Ewamall.WebAPI.dll"]
