@@ -36,6 +36,7 @@ namespace Ewamall.Domain
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IIndustryAggrateRepo, IndustryAggrateRepo>();
             services.AddScoped<IDashBoardRepo, DashBoardRepo>();
+            services.AddScoped<IProductSellDetailRepo, ProductSellDetailRepo>();
             services.AddScoped(typeof(IBaseRepo<>), typeof(BaseRepo<>));
             //
             services.AddSingleton<NotificationHub>();
