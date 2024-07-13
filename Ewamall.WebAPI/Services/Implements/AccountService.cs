@@ -66,18 +66,48 @@ namespace Ewamall.WebAPI.Services.Implements
 
             // Tạo message HTML
             string htmlMessage = $@"
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Xác thực tài khoản</title>
-        </head>
-        <body>
-            <h2>Xin chào, {account.User.Name}!</h2>
-            <p>Bạn đã tạo tài khoản thành công cho dịch vụ EWaMall của chúng tôi.</p>
-            <p>Vui lòng nhấn vào <a href='https://ewamallbe.onrender.com/api/Account/ConfirmAccount/{account.Email}'>liên kết này</a> để xác thực tài khoản.</p>
-        </body>
-        </html>
-    ";
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Xác thực tài khoản</title>
+                    </head>
+                    <body>
+                        <h2>Xin chào, {account.User.Name}!</h2>
+                        <p>Bạn đã tạo tài khoản thành công cho dịch vụ EWaMall của chúng tôi.</p>
+                        <p>Vui lòng nhấn vào <a href='https://ewamallbe.onrender.com/api/Account/ConfirmAccount/{account.Email}'>liên kết này</a> để xác thực tài khoản.</p>
+                    </body>
+                    </html>
+                ";
+            /*            string htmlMessage = $@" <div style=""max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border: 1px solid #ddd; border-radius: 5px;"">
+                    <h2 style=""background-color: #E9BB45; color: #242058; text-align: center; padding: 10px 0;"">Giao dịch thành công</h2>
+                    <p>Đơn hàng của bạn đã được nhận và hiện đang được xử lý. Chi tiết đơn hàng của bạn được hiển thị bên dưới để bạn tham khảo:</p>
+                    <h3>Order: #OrderCode</h3>
+                    <table style=""width: 100%; border-collapse: collapse;"">
+                        <tr>
+                            <th style=""border: 1px solid #ddd; padding: 8px; text-align: left;"">Sản phẩm</th>
+                            <th style=""border: 1px solid #ddd; padding: 8px; text-align: left;"">Số lượng</th>
+                            <th style=""border: 1px solid #ddd; padding: 8px; text-align: left;"">Giá tiền</th>
+                        </tr>
+                        <tr>
+                            <td style=""border: 1px solid #ddd; padding: 8px;"">Tên sản phẩm</td>
+                            <td style=""border: 1px solid #ddd; padding: 8px;"">1</td>
+                            <td style=""border: 1px solid #ddd; padding: 8px;"">$99.99</td>
+                        </tr>
+                        <tr>
+                            <td colspan=""2"" style=""border: 1px solid #ddd; padding: 8px; text-align: right;"">Phương thức thanh toán:</td>
+                            <td style=""border: 1px solid #ddd; padding: 8px;"">Ship code</td>
+                        </tr>
+                        <tr>
+                            <td colspan=""2"" style=""border: 1px solid #ddd; padding: 8px; text-align: right; font-weight: bold;"">Order Total:</td>
+                            <td style=""border: 1px solid #ddd; padding: 8px;"">$99.99</td>
+                        </tr>
+                    </table>
+                    <h3>Customer details</h3>
+                    <p>Email: Email của customer<br>Sdt: 00000000000</p>
+                   <h3>Địa chỉ ship</h3>
+                    <p>Walter White<br>308 Negra Arroyo Lane<br>Albuquerque, New Mexico 87104</p>
+
+                </div>";*/
 
             await _emailSender.SendEmailAsync(request.Email, "Xác thực đăng kí tài khoản EWaMall", htmlMessage);
 

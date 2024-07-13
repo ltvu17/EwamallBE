@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Ewamall.Business.IRepository;
+using Ewamall.DataAccess.Repository;
 using Ewamall.Domain.Entities;
 using Ewamall.Domain.Shared;
 using Ewamall.WebAPI.DTOs;
 using Microsoft.AspNetCore.Http;
+using System.Collections;
 using System.Security.Principal;
 
 namespace Ewamall.WebAPI.Services.Implements
@@ -12,6 +14,7 @@ namespace Ewamall.WebAPI.Services.Implements
     {
         private readonly ICartRepository _cartRepository;
         private readonly IUserRepo _userRepo;
+        private readonly IProductSellDetailRepo _productSellDetailsRepo;
         private readonly IBaseSetupService<OrderStatus> _orderStatusService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IShipAddressRepo _shipAddressRepo;
@@ -23,6 +26,7 @@ namespace Ewamall.WebAPI.Services.Implements
         public UserService(ICartRepository cartRepository,
             IUserRepo userRepo,
             IBaseSetupService<OrderStatus> orderStatusService,
+            IProductSellDetailRepo productSellDetailsRepo,
             IUnitOfWork unitOfWork,
             IShipAddressRepo shipAddressRepo,
             IOrderRepo orderRepo,
@@ -32,6 +36,7 @@ namespace Ewamall.WebAPI.Services.Implements
         {
             _cartRepository = cartRepository;
             _userRepo = userRepo;
+            _productSellDetailsRepo = productSellDetailsRepo;
             _orderStatusService = orderStatusService;
             _unitOfWork = unitOfWork;
             _shipAddressRepo = shipAddressRepo;
@@ -167,6 +172,7 @@ namespace Ewamall.WebAPI.Services.Implements
             {
                 return Result.Failure<Order>(new Error("CreateOrder.Create()", "Create order error"));
             }
+            List<OrderResponseMail> orderResponse = new List<OrderResponseMail>();
             var orderDetails = request.CreateOrderDetailCommands;
             var order = result.Value;
             if (orderDetails != null)
@@ -174,7 +180,14 @@ namespace Ewamall.WebAPI.Services.Implements
                 foreach(var orderDetail in orderDetails)
                 {
                     order.AddOrderDetail(orderDetail.Quantity, orderDetail.ProductSellDetailId);
-
+                    var productInfor = await _productSellDetailsRepo.GetByIdAsync(orderDetail.ProductSellDetailId);
+                    var orderResponseForList = new OrderResponseMail
+                    {
+                        ProductName = productInfor.Product.ProductName,
+                        Quantity = orderDetail.Quantity,
+                        Price = productInfor.Price,
+                    };
+                    orderResponse.Add(orderResponseForList);
                 }
             }
             await _orderRepo.AddAsync(order);
@@ -182,22 +195,72 @@ namespace Ewamall.WebAPI.Services.Implements
             // Mail
             // Tạo message HTML
             var user = await _userRepo.GetByIdAsync(userId);
-            string htmlMessage = $@"
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Thông tin mua hàng</title>
-                </head>
-                <body>
-                    <h2>Xin chào, {user.Name}!</h2>
-                    <p>EWaMall xin cám ơn vì bạn đã tin tưởng và mua sản phẩm của chúng tôi</p>
-                    <p>Chi tiết đơn hàng của bạn bao gồm: Haha hihi hehe </p>
-                    <p>Mong mọi người tiếp tục ủng hộ và nếu có vấn đề gì có thể phản hồi email này!</p>
-                    <p> Xin cám ơn </>
-                </body>
-                </html>
-                ";
-            await _emailSender.SendEmailAsync(user.Account.Email, "Xác thực đăng kí tài khoản EWaMall", htmlMessage);
+            /*            string htmlMessage = $@" <div style=""max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border: 1px solid #ddd; border-radius: 5px;"">
+                    <h2 style=""background-color: #E9BB45; color: #242058; text-align: center; padding: 10px 0;"">Giao dịch thành công</h2>
+                    <p>Đơn hàng của bạn đã được nhận và hiện đang được xử lý. Chi tiết đơn hàng của bạn được hiển thị bên dưới để bạn tham khảo:</p>
+                    <h3>Order: #{request.OrderCode}</h3>
+                    <table style=""width: 100%; border-collapse: collapse;"">
+                        <tr>
+                            <th style=""border: 1px solid #ddd; padding: 8px; text-align: left;"">Sản phẩm</th>
+                            <th style=""border: 1px solid #ddd; padding: 8px; text-align: left;"">Số lượng</th>
+                            <th style=""border: 1px solid #ddd; padding: 8px; text-align: left;"">Giá tiền</th>
+                        </tr>
+                        <tr>
+                            <td style=""border: 1px solid #ddd; padding: 8px;"">Tên sản phẩm</td>
+                            <td style=""border: 1px solid #ddd; padding: 8px;"">1</td>
+                            <td style=""border: 1px solid #ddd; padding: 8px;"">$99.99</td>
+                        </tr>
+                        <tr>
+                            <td colspan=""2"" style=""border: 1px solid #ddd; padding: 8px; text-align: right;"">Phương thức thanh toán:</td>
+                            <td style=""border: 1px solid #ddd; padding: 8px;"">Ship code</td>
+                        </tr>
+                        <tr>
+                            <td colspan=""2"" style=""border: 1px solid #ddd; padding: 8px; text-align: right; font-weight: bold;"">Order Total:</td>
+                            <td style=""border: 1px solid #ddd; padding: 8px;"">{request.TotalCost} </td>
+                        </tr>
+                    </table>
+                    <h3>Customer details</h3>
+                    <p>Email: {user.Account.Email}<br>Sdt: {user.Account.PhoneNumber}</p>
+                    <h3>Địa chỉ ship</h3>
+                    <p>{user.Address}</p>
+                </div>";*/
+            string orderDetailsHtml = "";
+foreach (var orderDetail in orderResponse)
+{
+    orderDetailsHtml += $@"
+        <tr>
+            <td style=""border: 1px solid #ddd; padding: 8px;"">{orderDetail.ProductName}</td>
+            <td style=""border: 1px solid #ddd; padding: 8px;"">{orderDetail.Quantity}</td>
+            <td style=""border: 1px solid #ddd; padding: 8px;"">{orderDetail.Price}</td>
+        </tr>";
+}
+            string htmlMessage = $@" <div style=""max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border: 1px solid #ddd; border-radius: 5px;"">
+    <h2 style=""background-color: #E9BB45; color: #242058; text-align: center; padding: 10px 0;"">Giao dịch thành công</h2>
+    <p>Đơn hàng của bạn đã được nhận và hiện đang được xử lý. Chi tiết đơn hàng của bạn được hiển thị bên dưới để bạn tham khảo:</p>
+    <h3>Order: #{request.OrderCode}</h3>
+    <table style=""width: 100%; border-collapse: collapse;"">
+        <tr>
+            <th style=""border: 1px solid #ddd; padding: 8px; text-align: left;"">Sản phẩm</th>
+            <th style=""border: 1px solid #ddd; padding: 8px; text-align: left;"">Số lượng</th>
+            <th style=""border: 1px solid #ddd; padding: 8px; text-align: left;"">Giá tiền</th>
+        </tr>
+        {orderDetailsHtml}
+        <tr>
+            <td colspan=""2"" style=""border: 1px solid #ddd; padding: 8px; text-align: right;"">Phương thức thanh toán:</td>
+            <td style=""border: 1px solid #ddd; padding: 8px;"">Ship code</td>
+        </tr>
+        <tr>
+            <td colspan=""2"" style=""border: 1px solid #ddd; padding: 8px; text-align: right; font-weight: bold;"">Order Total:</td>
+            <td style=""border: 1px solid #ddd; padding: 8px;"">{request.TotalCost} </td>
+        </tr>
+    </table>
+    <h3>Customer details</h3>
+    <p>Email: {user.Account.Email}<br>Sdt: {user.Account.PhoneNumber}</p>
+    <h3>Địa chỉ ship</h3>
+    <p>{user.Address}</p>
+</div>";
+
+            await _emailSender.SendEmailAsync(user.Account.Email, "Giao dịch thành công", htmlMessage);
             await _notificationService.CreateNotification(new CreateNotification()
             {
                 Username = user.Name,
