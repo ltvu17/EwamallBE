@@ -277,7 +277,7 @@ foreach (var orderDetail in orderResponse)
                 Sender = 1,
                 RoleId  = 4
             });
-            await _notificationService.CreateNotification(new CreateNotification()
+/*            await _notificationService.CreateNotification(new CreateNotification()
             {
                 Username = "Lê Văn Minh Nhật",
                 Title = "Đơn hàng mới",
@@ -286,7 +286,7 @@ foreach (var orderDetail in orderResponse)
                 NotificationType = "Personal",
                 Sender = 1,
                 RoleId = 3
-            });
+            });*/
             var returnOrderQr = $@"https://img.vietqr.io/image/mbbank-0377899819-compact2.jpg?amount={order.TotalCost}&addInfo={shop.ShopName}&accountName=Le%20Van%20Minh%20Nhat";
             return returnOrderQr;
         }
