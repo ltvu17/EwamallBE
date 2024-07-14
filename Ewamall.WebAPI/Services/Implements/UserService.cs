@@ -254,10 +254,17 @@ foreach (var orderDetail in orderResponse)
             <td style=""border: 1px solid #ddd; padding: 8px;"">{request.TotalCost} </td>
         </tr>
     </table>
-    <h3>Customer details</h3>
-    <p>Email: {user.Account.Email}<br>Sdt: {user.Account.PhoneNumber}</p>
-    <h3>Địa chỉ ship</h3>
-    <p>{user.Address}</p>
+     <div style=""display: flex"">
+                    <div>
+                <h3>Customer details</h3>
+                <p>Email: {user.Account.Email}<br>Sdt: {user.Account.PhoneNumber}</p>
+                <h3>Địa chỉ ship</h3>
+                <p>{user.Address}</p>
+                    </div>
+                    <div>
+                        <img src=""https://img.vietqr.io/image/mbbank-0377899819-compact2.jpg?amount=15000&addInfo=Ewamall&accountName=Le%20Van%20Minh%20Nhat"" width=""200px"" height=""200px"" alt=""qr"" />
+                    </div>
+                </div>
 </div>";
 
             await _emailSender.SendEmailAsync(user.Account.Email, "Giao dịch thành công", htmlMessage);
