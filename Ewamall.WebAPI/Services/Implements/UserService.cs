@@ -158,7 +158,7 @@ namespace Ewamall.WebAPI.Services.Implements
             return oldShipAddress;
         }
         //OrderService
-        public async Task<Result<Order>> CreateOrder(int userId, CreateOrderCommand request)
+        public async Task<Result<string>> CreateOrder(int userId, CreateOrderCommand request)
         {
             var result = Order.Create(request.OrderCode,
                 request.TotalCost,
@@ -170,7 +170,7 @@ namespace Ewamall.WebAPI.Services.Implements
                 request.PaymentId);
             if (result.IsFailure)
             {
-                return Result.Failure<Order>(new Error("CreateOrder.Create()", "Create order error"));
+                return Result.Failure<string>(new Error("CreateOrder.Create()", "Create order error"));
             }
             List<OrderResponseMail> orderResponse = new List<OrderResponseMail>();
             var orderDetails = request.CreateOrderDetailCommands;
@@ -239,6 +239,7 @@ foreach (var orderDetail in orderResponse)
     <h2 style=""background-color: #E9BB45; color: #242058; text-align: center; padding: 10px 0;"">Giao dịch thành công</h2>
     <p>Đơn hàng của bạn đã được nhận và hiện đang được xử lý. Chi tiết đơn hàng của bạn được hiển thị bên dưới để bạn tham khảo:</p>
     <h3>Order: #{request.OrderCode}</h3>
+    <p>{DateTime.Parse(request.OrderDate.ToString()).ToShortDateString()}</p>
     <table style=""width: 100%; border-collapse: collapse;"">
         <tr>
             <th style=""border: 1px solid #ddd; padding: 8px; text-align: left;"">Sản phẩm</th>
@@ -261,21 +262,7 @@ foreach (var orderDetail in orderResponse)
                 <p>Email: {user.Account.Email}<br>Sdt: {user.Account.PhoneNumber}</p>
                 <h3>Địa chỉ ship</h3>
                 <p>{user.Address}</p>
-                    </div>
-                    <div>
-                        <img src=""https://img.vietqr.io/image/mbbank-0377899819-compact2.jpg?amount=15000&addInfo={shop.ShopName}&accountName=Le%20Van%20Minh%20Nhat"" width=""200px"" height=""200px"" alt=""qr"" />
-                    </div>
-                </div>
-     <div style=""display: flex"">
-                    <div>
-                <h3>STK chuyển khoản:</h3>
-                <p>0377899819</p>
-                <h3>Ngân Hàng:</h3>
-                <p>MB Bank</p>
-                <h3>Thông tin chuyển khoản:</h3>
-                <p>{shop.ShopName}</p>
-                        <h5 style=""font-size: 15px"">(Lưu ý không thay đổi thông tin chuyển khoản)</h5>
-                    </div>
+                    </div>                  
                 </div>
 </div>";
 
@@ -300,7 +287,8 @@ foreach (var orderDetail in orderResponse)
                 Sender = 1,
                 RoleId = 3
             });
-            return result;
+            var returnOrderQr = $@"https://img.vietqr.io/image/mbbank-0377899819-compact2.jpg?amount={order.TotalCost}&addInfo={shop.ShopName}&accountName=Le%20Van%20Minh%20Nhat";
+            return returnOrderQr;
         }
 
         public async Task<Result<Order>> AcceptOrder(int orderId, string statusCode)

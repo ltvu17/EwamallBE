@@ -9,6 +9,7 @@
         public int ShipAddressId { get;  set; }
         public int VoucherId { get;  set; }
         public int PaymentId { get; set; }
+        public DateTime? OrderDate { get; set; }
         public IEnumerable<CreateOrderDetailCommand> CreateOrderDetailCommands { get; set; }
     }
      public class CreateOrderDetailCommand
