@@ -11,5 +11,6 @@ namespace Ewamall.Business.IRepository
     public interface IUserRepo : IBaseRepo<User>
     {
         public bool IsUserExist(int userId);
+        public Task<Seller> GetSellerByProduct(int productDetailId);
     }
 }

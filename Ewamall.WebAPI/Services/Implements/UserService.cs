@@ -195,6 +195,7 @@ namespace Ewamall.WebAPI.Services.Implements
             // Mail
             // Tạo message HTML
             var user = await _userRepo.GetByIdAsync(userId);
+            var shop = await _userRepo.GetSellerByProduct(request.CreateOrderDetailCommands.FirstOrDefault().ProductSellDetailId);
             /*            string htmlMessage = $@" <div style=""max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border: 1px solid #ddd; border-radius: 5px;"">
                     <h2 style=""background-color: #E9BB45; color: #242058; text-align: center; padding: 10px 0;"">Giao dịch thành công</h2>
                     <p>Đơn hàng của bạn đã được nhận và hiện đang được xử lý. Chi tiết đơn hàng của bạn được hiển thị bên dưới để bạn tham khảo:</p>
@@ -262,7 +263,18 @@ foreach (var orderDetail in orderResponse)
                 <p>{user.Address}</p>
                     </div>
                     <div>
-                        <img src=""https://img.vietqr.io/image/mbbank-0377899819-compact2.jpg?amount=15000&addInfo=Ewamall&accountName=Le%20Van%20Minh%20Nhat"" width=""200px"" height=""200px"" alt=""qr"" />
+                        <img src=""https://img.vietqr.io/image/mbbank-0377899819-compact2.jpg?amount=15000&addInfo={shop.ShopName}&accountName=Le%20Van%20Minh%20Nhat"" width=""200px"" height=""200px"" alt=""qr"" />
+                    </div>
+                </div>
+     <div style=""display: flex"">
+                    <div>
+                <h3>STK chuyển khoản:</h3>
+                <p>0377899819</p>
+                <h3>Ngân Hàng:</h3>
+                <p>MB Bank</p>
+                <h3>Thông tin chuyển khoản:</h3>
+                <p>{shop.ShopName}</p>
+                        <h5 style=""font-size: 15px"">(Lưu ý không thay đổi thông tin chuyển khoản)</h5>
                     </div>
                 </div>
 </div>";
