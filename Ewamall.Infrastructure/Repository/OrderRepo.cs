@@ -41,7 +41,8 @@ namespace Ewamall.DataAccess.Repository
                 PayDate = s.PayDate,
                 ShipCost = s.ShipCost,
                 ShipDate = s.ShipDate,
-                TotalCost = s.TotalCost
+                TotalCost = s.TotalCost,
+                Status = s.Status
             });
         }
     }

@@ -27,6 +27,7 @@ namespace Ewamall.Business.IRepository
         public DateTime? CancelDate { get;  set; }
         public string CancelReason { get;  set; }
         public Seller Seller { get;  set; }
+        public OrderStatus Status { get;  set; }
 
     }
 }
