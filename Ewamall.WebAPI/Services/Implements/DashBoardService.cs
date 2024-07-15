@@ -59,7 +59,7 @@ namespace Ewamall.WebAPI.Services.Implements
 
         public async Task<Result<DashBoardRevenueResponse>> GetAllRevenue()
         {
-            var orders = (await _orderRepo.GetAllAsync());
+            var orders = (await _orderRepo.GetAllAsync()).Where(s=>s.StatusId == 4).ToList();
             DashBoardRevenueResponse response = new DashBoardRevenueResponse();
             foreach (var order in orders)
             {
@@ -157,12 +157,12 @@ namespace Ewamall.WebAPI.Services.Implements
             return result;
         }
 
-        public async Task<Result<IEnumerable<Seller>>> GetListSellers()
+        public async Task<Result<IEnumerable<SellerDTO>>> GetListSellers()
         {
-            Result<IEnumerable<Seller>> result = (await _sellerRepo.GetAllAsync()).ToList();
+            Result<IEnumerable<SellerDTO>> result = (await _sellerRepo.GetSellerDTOs()).ToList();
             if (result.IsFailure)
             {
-                return Result.Failure<IEnumerable<Seller>>(new Error("IEnumerable<Seller>.GetAll()", "Fail to load account"));
+                return Result.Failure<IEnumerable<SellerDTO>>(new Error("IEnumerable<Seller>.GetAll()", "Fail to load account"));
             }
             return result;
         }

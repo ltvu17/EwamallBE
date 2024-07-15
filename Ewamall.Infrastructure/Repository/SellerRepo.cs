@@ -23,6 +23,33 @@ namespace Ewamall.DataAccess.Repository
         {
             return await _context.Sellers.Where(s => s.Id == id).Include(s => s.Wallet).FirstOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<SellerDTO>> GetSellerDTOs()
+        {
+            var sellerDtos = _context.Sellers.Select(s => new SellerDTO
+            {
+                Address = s.Address,
+                CreateDate = s.CreateDate,
+                Description = s.Description,
+                DistrictId = s.DistrictId,
+                Email = s.Email,    
+                id = s.Id,  
+                PhoneNumber = s.PhoneNumber,
+                ProvinceId = s.ProvinceId,
+                ShopName = s.ShopName,
+                WardId = s.WardId,
+                Revenue = 0
+            }).ToList();
+            foreach (var seller in sellerDtos)
+            {
+                var shopRevenue = await _context.Orders.Include(s=> s.OrderDetails).ThenInclude(s=>s.ProductSellDetail).ThenInclude(s=>s.Product).ThenInclude(s=>s.Seller)
+                    .Where(s=>s.OrderDetails.FirstOrDefault().ProductSellDetail.Product.Seller.Id == seller.id).ToListAsync();
+                var revenue = shopRevenue.Sum(s => s.TotalCost);
+                seller.Revenue = revenue;
+            }
+            return sellerDtos;
+        }
+
         public bool IsEmailExist(string email)
         {
             return _context.Sellers.Any(s => s.Email == email);
@@ -32,5 +59,6 @@ namespace Ewamall.DataAccess.Repository
         {
             return _context.Sellers.Any(s => s.PhoneNumber == phone);
         }
+   
     }
 }

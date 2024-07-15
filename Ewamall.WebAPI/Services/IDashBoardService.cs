@@ -14,7 +14,7 @@ namespace Ewamall.WebAPI.Services
         public Task<Result<DashBoardCustomerResponse>> GetAllCustomer();
         public Task<Result<DashBoardCustomerResponse>> GetAllOrders();
         public Task<Result<DashBoardCustomerResponse>> GetAllSeller();
-        public Task<Result<IEnumerable<Seller>>> GetListSellers();
+        public Task<Result<IEnumerable<SellerDTO>>> GetListSellers();
         public Task<Result<IEnumerable<User>>> GetListCustomers();
         public Task<Result<IEnumerable<OrderDTO>>> GetListOrders();
     }
