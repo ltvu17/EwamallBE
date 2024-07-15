@@ -167,7 +167,8 @@ namespace Ewamall.WebAPI.Services.Implements
                 userId,
                 request.ShipAddressId,
                 request.VoucherId,
-                request.PaymentId);
+                request.PaymentId,
+                (DateTime)request.OrderDate);
             if (result.IsFailure)
             {
                 return Result.Failure<string>(new Error("CreateOrder.Create()", "Create order error"));

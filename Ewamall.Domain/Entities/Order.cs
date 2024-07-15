@@ -54,7 +54,7 @@ namespace Ewamall.Domain.Entities
         public IEnumerable<OrderDetail> OrderDetails => _orderDetails;
 
 
-        public static Result<Order> Create(string orderCode, float totalCost, float shipCost, int statusId, int userId, int shipAddressId, int voucherId, int paymentId)
+        public static Result<Order> Create(string orderCode, float totalCost, float shipCost, int statusId, int userId, int shipAddressId, int voucherId, int paymentId, DateTime orderDate)
         {
             if(totalCost < 0 || shipCost < 0)
             {
@@ -65,7 +65,7 @@ namespace Ewamall.Domain.Entities
             {
                 Order.VoucherId = null;
             }
-            Order.OrderDate = DateTime.Now;
+            Order.OrderDate = orderDate;
             Order.CancelReason = "";
             return Order;
         }
