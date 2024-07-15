@@ -1,4 +1,5 @@
 ﻿using Ewamall.Business.Entities;
+using Ewamall.Business.IRepository;
 using Ewamall.Domain.Entities;
 using Ewamall.Domain.Shared;
 using Ewamall.WebAPI.DTOs;
@@ -15,6 +16,6 @@ namespace Ewamall.WebAPI.Services
         public Task<Result<DashBoardCustomerResponse>> GetAllSeller();
         public Task<Result<IEnumerable<Seller>>> GetListSellers();
         public Task<Result<IEnumerable<User>>> GetListCustomers();
-        public Task<Result<IEnumerable<Order>>> GetListOrders();
+        public Task<Result<IEnumerable<OrderDTO>>> GetListOrders();
     }
 }

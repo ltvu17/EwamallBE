@@ -147,12 +147,12 @@ namespace Ewamall.WebAPI.Services.Implements
             return result;
         }
 
-        public async Task<Result<IEnumerable<Order>>> GetListOrders()
+        public async Task<Result<IEnumerable<OrderDTO>>> GetListOrders()
         {
-            Result<IEnumerable<Order>> result = (await _orderRepo.GetAllAsync()).ToList();
+            Result<IEnumerable<OrderDTO>> result = (await _orderRepo.GetAllAsyncDTO()).ToList();
             if (result.IsFailure)
             {
-                return Result.Failure<IEnumerable<Order>>(new Error("IEnumerable<Order>.GetAll()", "Fail to load account"));
+                return Result.Failure<IEnumerable<OrderDTO>>(new Error("IEnumerable<Order>.GetAll()", "Fail to load account"));
             }
             return result;
         }

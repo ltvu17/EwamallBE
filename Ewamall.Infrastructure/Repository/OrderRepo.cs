@@ -28,9 +28,21 @@ namespace Ewamall.DataAccess.Repository
             return await _context.Orders.Where(s => s.OrderDetails.FirstOrDefault().ProductSellDetail.Product.Seller.Id == sellerId).Include(s => s.Status).Include(s => s.OrderDetails).ThenInclude(s => s.ProductSellDetail).ThenInclude(s => s.Product).ThenInclude(s=>s.Seller).AsNoTracking().ToListAsync();
         }
 
-        public override async Task<IEnumerable<Order>> GetAllAsync()
+        public async Task<IEnumerable<OrderDTO>> GetAllAsyncDTO()
         {
-            return await _context.Orders.Include(s => s.Status).AsNoTracking().ToListAsync();
+            return  _context.Orders.Include(s => s.OrderDetails).ThenInclude(s => s.ProductSellDetail).ThenInclude(s => s.Product).ThenInclude(s => s.Seller).AsNoTracking().Select(s=> new OrderDTO
+            {
+                id = s.Id,
+                Seller = s.OrderDetails.FirstOrDefault().ProductSellDetail.Product.Seller,
+                CancelReason = s.CancelReason,
+                CancelDate = s.CancelDate,  
+                OrderCode = s.OrderCode,
+                OrderDate = s.OrderDate,
+                PayDate = s.PayDate,
+                ShipCost = s.ShipCost,
+                ShipDate = s.ShipDate,
+                TotalCost = s.TotalCost
+            });
         }
     }
 }
